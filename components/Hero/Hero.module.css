@@ -1,0 +1,180 @@
+.hero {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 100vh;
+  background: linear-gradient(to right, #dde4d7, #acb99a);
+  padding: 30px 20px;
+  padding-bottom: 0;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 90%;
+  width: 100%;
+  gap: 2rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left {
+  width: 47%;
+  display: flex;
+  flex-direction: column;
+}
+
+.left h1 {
+  font-size: 45px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.left p {
+  font-size: 16px;
+  color: #334155;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.buttons,
+.callToActions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+.buttonLink,
+.outlineButton {
+  min-width: 150px;
+  padding: 8px 20px;
+  font-weight: 700;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 6px;
+  transition: all 200ms ease;
+}
+
+.buttonLink {
+  background-color: #facc15;
+  color: #1e293b;
+}
+
+.buttonLink:hover,
+.buttonLink:focus {
+  background-color: #2a4b44;
+  color: white;
+  cursor: pointer;
+  outline: none;
+}
+
+.outlineButton {
+  background-color: transparent;
+  border: 2px solid #1e293b;
+  color: #6b5910;
+}
+
+.outlineButton:hover,
+.outlineButton:focus {
+  background-color: #facc15;
+  color: #1e293b;
+  cursor: pointer;
+  outline: none;
+}
+
+.right {
+  width: 50%;
+  min-width: 320px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imageWrapper {
+  width: 100%;
+  height: 600px;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ===========================
+   ✅ Responsive Queries
+   =========================== */
+
+/* Tablet (<= 1024px) */
+@media (max-width: 1024px) {
+  .left {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .right {
+    width: 100%;
+    margin-top: 32px;
+  }
+
+  .left h1 {
+    font-size: 36px;
+    text-align: center;
+  }
+  .left p {
+    text-align: center;
+  }
+
+  .imageWrapper {
+    height: 450px;
+  }
+}
+
+/* Mobile (<= 768px) */
+@media (max-width: 768px) {
+  .hero {
+    height: auto;
+    padding: 40px 16px;
+    margin-top: 20px;
+  }
+
+  .container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .left h1 {
+    font-size: 28px;
+  }
+
+  .left p {
+    font-size: 15px;
+  }
+
+  .imageWrapper {
+    height: 300px;
+  }
+
+  .buttonLink,
+  .outlineButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .callToActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

@@ -1,0 +1,142 @@
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Full height for uniform sizing */
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.header {
+  width: 100%;
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+  width: 100%;
+  height: 250px;
+  padding: 8px;
+  border-radius: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.main {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.titleSection {
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #1e293b;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.meta p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.icon {
+  color: #4b5563;
+}
+
+.details {
+  margin-top: 12px;
+}
+
+.subtitle {
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 8px;
+}
+
+.tags {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.tag {
+  background-color: #e2e8f0;
+  color: #1e293b;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 0.8rem;
+}
+
+.buttons {
+  margin-top: auto;
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #f1f5f9;
+  color: #1e293b;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.link:hover {
+  background-color: #e2e8f0;
+}
+
+.linkIcon {
+  margin-right: 4px;
+}
+
+.primaryBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #facc15;
+  color: #1e293b;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.primaryBtn:hover {
+  background-color: #eab308;
+}
+
+.arrowIcon {
+  margin-left: 4px;
+}

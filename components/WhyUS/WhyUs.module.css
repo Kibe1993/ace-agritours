@@ -1,0 +1,85 @@
+.gridSection {
+  padding: 20px;
+  background-color: #f1f5f9;
+  width: 100%;
+  background: linear-gradient(to right, #dde4d7, #acb99a);
+}
+
+.container {
+  max-width: 90%;
+  background-color: #d6ecdc;
+  padding: 2% 2%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  gap: 40px;
+}
+
+.gridHeader {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.gridTitle {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 12px;
+}
+
+.gridDescription {
+  font-size: 14px;
+  color: #475569;
+}
+
+.gridMain {
+  display: grid;
+  width: 100%;
+  margin: auto;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  overflow: hidden;
+}
+.buttonLink {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  min-width: 150px;
+  padding: 10px 20px;
+  background-color: #facc15;
+  color: #1e293b;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.buttonLink:hover {
+  background-color: #eab308;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
+@media (max-width: 768px) {
+  .container {
+    max-width: 100%;
+    padding: 5% 4%;
+    gap: 24px;
+  }
+  .gridTitle {
+    font-size: 1.5rem;
+  }
+
+  .gridDescription {
+    font-size: 1rem;
+  }
+
+  .buttonLink {
+    font-size: 1rem;
+    padding: 10px 16px;
+  }
+}

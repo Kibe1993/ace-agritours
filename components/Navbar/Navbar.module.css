@@ -1,0 +1,214 @@
+.section {
+  width: 100%;
+  min-height: 100px;
+  background-color: #477749;
+  color: #1e293b;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.nav {
+  width: 80%;
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.logoLink {
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-items: start;
+  transition: transform 300ms ease;
+}
+
+.logoLink:hover,
+.logoLink:focus {
+  transform: scale(1.1);
+  outline: none;
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: #e7d911;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.navMenu {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+}
+
+.navLinks {
+  width: 70%;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+}
+
+.navLink {
+  color: #e7d911;
+  text-decoration: none;
+  transition: color 200ms ease;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 18px;
+  gap: 6px;
+  position: relative;
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 25;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background-color: #e7d911;
+  transition: width 0.3s ease;
+}
+
+.navLink:hover::after,
+.navLink:focus::after,
+.navLink.active::after {
+  width: 60%;
+}
+
+.navLink:hover,
+.navLink:focus {
+  color: #a59b12;
+  outline: none;
+}
+
+.callToActions {
+  display: flex;
+  justify-content: end;
+  gap: 16px;
+  width: 30%;
+}
+
+.buttonLink {
+  padding: 8px 20px;
+  background-color: #e7d911;
+  color: #1e293b;
+  border-radius: 6px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 200ms ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.buttonLink:hover,
+.buttonLink:focus {
+  background-color: #2a4b44;
+  color: white;
+  cursor: pointer;
+  outline: none;
+}
+
+.outlineButton {
+  padding: 8px 16px;
+  background-color: transparent;
+  border: 2px solid #e7d911;
+  color: #e7d911;
+  border-radius: 6px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 200ms ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.outlineButton:hover,
+.outlineButton:focus {
+  background-color: #e7d911;
+  color: #1e293b;
+  outline: none;
+  cursor: pointer;
+}
+
+/* === MOBILE === */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .navMenu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #3a5c3e;
+    padding: 15px 0;
+    gap: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    animation: slideDown 300ms ease forwards;
+  }
+
+  .navMenu.open {
+    display: flex;
+  }
+
+  .navLinks,
+  .callToActions {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+
+  .navLink {
+    font-size: 16px;
+    padding: 8px 0;
+  }
+
+  .callToActions {
+    gap: 12px;
+    padding-top: 10px;
+  }
+
+  .nav {
+    flex-wrap: nowrap;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (max-width: 768px) {
+  /* Hide Admin button */
+  .adminButton {
+    display: none !important;
+  }
+
+  .navLink svg,
+  .buttonLink svg,
+  .outlineButton svg {
+    display: none;
+  }
+}

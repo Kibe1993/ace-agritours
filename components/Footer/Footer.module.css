@@ -1,0 +1,168 @@
+.footer {
+  background: linear-gradient(to right, #7b8d6a, #bad693);
+  color: #364822;
+  padding: 48px 20px 24px;
+  font-size: 0.95rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+  max-width: 90%;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+  justify-content: space-between;
+}
+
+.column {
+  flex: 1 1 230px;
+  min-width: 230px;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.logoIcon {
+  font-size: 2rem;
+  user-select: none;
+}
+
+.brandTitle {
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0;
+  color: #27411f;
+}
+
+.tagline {
+  font-size: 0.9rem;
+  color: rgb(235, 231, 10);
+  margin-top: 2px;
+  font-style: italic;
+}
+
+.description {
+  margin-bottom: 18px;
+  color: #2e3a19;
+  line-height: 1.6;
+}
+
+.socials {
+  display: flex;
+  gap: 16px;
+  margin-top: auto;
+}
+
+.socialLink {
+  color: #bfa42a;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.socialLink:hover,
+.socialLink:focus {
+  color: #e2ca3d;
+  outline: none;
+}
+
+.socialLink svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.5;
+}
+
+.column h4 {
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #27411f;
+  border-bottom: 2px solid #557335;
+  padding-bottom: 6px;
+}
+
+.column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.column ul li {
+  margin-bottom: 12px;
+}
+
+.link {
+  color: #364822;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.link:hover,
+.link:focus {
+  color: #e2ca3d;
+  outline: none;
+}
+
+.contact {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contact li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #2e3a19;
+  font-size: 0.95rem;
+}
+
+.contact svg {
+  stroke-width: 1.5;
+  color: #bfa42a;
+  min-width: 20px;
+  min-height: 20px;
+}
+
+.contactLink {
+  color: #364822;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contactLink:hover,
+.contactLink:focus {
+  color: #e2ca3d;
+  outline: none;
+}
+
+.bottom {
+  border-top: 1px solid #557335;
+  text-align: center;
+  padding-top: 24px;
+  margin-top: 40px;
+  color: #556b34;
+  font-size: 0.85rem;
+  user-select: none;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    gap: 36px;
+    width: 90%;
+  }
+  .column {
+    min-width: auto;
+  }
+}

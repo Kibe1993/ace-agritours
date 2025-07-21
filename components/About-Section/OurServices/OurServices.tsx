@@ -17,7 +17,7 @@ type ServiceItem = {
   image: StaticImageData;
   title: string;
   description: string;
-  category: String;
+  category: string;
 };
 
 const services: ServiceItem[] = [

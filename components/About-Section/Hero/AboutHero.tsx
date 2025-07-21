@@ -8,7 +8,7 @@ export default function AboutHeroSection() {
       <div className={styles.container}>
         <div className={styles.content}>
           <h1 className={styles.title}>
-            Discover Kenya's Rich Farming Culture Up Close
+            Discover Kenya&apos;s Rich Farming Culture Up Close
           </h1>
           <p className={styles.subtitle}>
             Join guided farm visits, connect with communities, and experience

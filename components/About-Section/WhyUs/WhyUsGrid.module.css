@@ -17,10 +17,10 @@
 }
 
 .header h3 {
-  font-size: 2rem;
+  font-size: 28px;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  color: #1d3557;
+  color: #444;
 }
 
 .header p {

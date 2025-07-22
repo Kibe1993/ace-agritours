@@ -29,7 +29,7 @@ export default function Navbar() {
     { name: "About", href: "/about", Icon: Info },
     { name: "Farm Visits", href: "/farmvisit", Icon: TreeDeciduous },
     { name: "Blogs", href: "/blog", Icon: FileText },
-    { name: "Testimonials", href: "/testimonials", Icon: MessageCircle },
+
     { name: "Contact", href: "/contact", Icon: MessageCircle },
   ];
 

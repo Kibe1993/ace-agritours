@@ -13,10 +13,11 @@
 }
 
 .heading {
-  font-size: 2rem;
+  font-size: 28px;
   text-align: center;
   margin-bottom: 2rem;
-  font-weight: bold;
+  font-weight: 600;
+  color: #444;
 }
 
 .contentWrapper {

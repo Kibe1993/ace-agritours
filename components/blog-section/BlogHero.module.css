@@ -1,0 +1,97 @@
+.section {
+  background: linear-gradient(to right, #dfeacb, #dde4d7);
+  margin-top: 100px;
+  padding: 3rem 1rem;
+}
+
+.container {
+  max-width: 80%;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.heroBackground {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  border-radius: 16px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+.textContent {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 2rem;
+  color: #fff;
+}
+
+.title {
+  font-size: 45px;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 18px;
+}
+
+.filterGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  justify-content: center;
+}
+.filterBtn {
+  padding: 0.5rem 1rem;
+  font-size: 16px;
+  font-weight: 600;
+  min-width: 120px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-color: white;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  font-weight: 500;
+}
+
+.filterBtn:hover {
+  background-color: #f1f1f1;
+}
+
+.active {
+  background-color: #34a853;
+  color: white;
+  border-color: #40d066;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .filterBtn {
+    font-size: 0.95rem;
+    padding: 0.5rem 1.2rem;
+  }
+}

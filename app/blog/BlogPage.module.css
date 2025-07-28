@@ -1,0 +1,5 @@
+.pageWrapper {
+  background: linear-gradient(to right, #f7f8f5, #dde4d7);
+  min-height: 100vh;
+  padding: 40px 0;
+}

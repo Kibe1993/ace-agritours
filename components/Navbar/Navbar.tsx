@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -23,13 +23,31 @@ import logo from "../../public/ace.png";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Close on outside click
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   const navLinks = [
     { name: "Home", href: "/", Icon: Home },
     { name: "About", href: "/about", Icon: Info },
     { name: "Farm Visits", href: "/farmvisit", Icon: TreeDeciduous },
+    { name: "Services", href: "/services", Icon: TreeDeciduous },
     { name: "Blogs", href: "/blog", Icon: FileText },
-
     { name: "Contact", href: "/contact", Icon: MessageCircle },
   ];
 
@@ -53,7 +71,10 @@ export default function Navbar() {
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
-        <div className={`${styles.navMenu} ${isOpen ? styles.open : ""}`}>
+        <div
+          ref={menuRef}
+          className={`${styles.navMenu} ${isOpen ? styles.open : ""}`}
+        >
           <div className={styles.navLinks}>
             {navLinks.map(({ name, href, Icon }) => {
               const isActive =
@@ -66,6 +87,7 @@ export default function Navbar() {
                   className={`${styles.navLink} ${
                     isActive ? styles.active : ""
                   }`}
+                  onClick={() => setIsOpen(false)}
                 >
                   <Icon size={18} />
                   {name}
@@ -84,6 +106,7 @@ export default function Navbar() {
                     ? styles.outlineButton
                     : styles.buttonLink
                 } ${name === "Admin" ? styles.adminButton : ""}`}
+                onClick={() => setIsOpen(false)} // ✅ Close on button click too
               >
                 {name === "Donate" && (
                   <>

@@ -7,7 +7,7 @@ import { upcomingVisits } from "@/app/assets/farmvisit/farmvisitassets";
 
 export default function PlannedVisits() {
   return (
-    <section className={styles.section}>
+    <section id="plannedvisits" className={styles.section}>
       <div className={styles.container}>
         <h2 className={styles.title}>Planned Farm Visits</h2>
         <p className={styles.subtitle}>
@@ -67,8 +67,8 @@ export default function PlannedVisits() {
         </div>
 
         <div className={styles.linkWrapper}>
-          <Link href="/planned-visits" className={styles.link}>
-            See all
+          <Link href="/contact" className={styles.link}>
+            Reach Out
           </Link>
         </div>
       </div>

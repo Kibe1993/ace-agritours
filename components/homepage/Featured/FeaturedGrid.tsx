@@ -22,7 +22,7 @@ export default function FeaturedGrid() {
           ))}
         </main>
 
-        <Link href={"/farmvisits"} className={styles.buttonLink}>
+        <Link href={"/farmvisit"} className={styles.buttonLink}>
           {" "}
           View All
         </Link>

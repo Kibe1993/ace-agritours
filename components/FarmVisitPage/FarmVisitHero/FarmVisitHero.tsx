@@ -1,4 +1,3 @@
-import Link from "next/link";
 import styles from "./FarmvisitHero.module.css";
 
 export default function FarmVisitHero() {
@@ -10,9 +9,9 @@ export default function FarmVisitHero() {
           Discover authentic Kenyan farming experiences and connect with local
           agricultural communities.
         </p>
-        <Link href="/farmvisit/planned" className={styles.link}>
+        <a href="#plannedvisits" className={styles.link}>
           See Planned Farm Visits →
-        </Link>
+        </a>
       </div>
     </section>
   );

@@ -1,8 +1,8 @@
-import FeaturedGrid from "@/components/Featured/FeaturedGrid";
-import Hero from "@/components/Hero/Hero";
-import InitiativeSection from "@/components/Initiative/InitiativeCard";
-import TestimonialGrid from "@/components/Testimonials/TestimonialGrid";
-import WhyUSGrid from "@/components/WhyUS/WhyUs";
+import FeaturedGrid from "@/components/homepage/Featured/FeaturedGrid";
+import Hero from "@/components/homepage/Hero/Hero";
+import InitiativeSection from "@/components/homepage/Initiative/InitiativeCard";
+import TestimonialGrid from "@/components/homepage/Testimonials/TestimonialGrid";
+import WhyUSGrid from "@/components/homepage/WhyUS/WhyUs";
 
 export default function Home() {
   return (

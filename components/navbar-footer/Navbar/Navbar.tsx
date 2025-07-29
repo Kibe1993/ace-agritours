@@ -18,7 +18,7 @@ import {
   X,
 } from "lucide-react";
 
-import logo from "../../public/ace.png";
+import logo from "../../../public/ace.png";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,7 +46,6 @@ export default function Navbar() {
     { name: "Home", href: "/", Icon: Home },
     { name: "About", href: "/about", Icon: Info },
     { name: "Farm Visits", href: "/farmvisit", Icon: TreeDeciduous },
-    { name: "Services", href: "/services", Icon: TreeDeciduous },
     { name: "Blogs", href: "/blog", Icon: FileText },
     { name: "Contact", href: "/contact", Icon: MessageCircle },
   ];

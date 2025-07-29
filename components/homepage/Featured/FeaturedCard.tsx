@@ -44,11 +44,11 @@ export default function FeaturedCard({ item }: { item: FarmVisit }) {
         </div>
 
         <div className={styles.buttons}>
-          <Link href="#" className={styles.link}>
+          <Link href="/blog" className={styles.link}>
             <Info size={16} className={styles.linkIcon} />
             Learn More
           </Link>
-          <Link href="#" className={styles.primaryBtn}>
+          <Link href="/farmvisit" className={styles.primaryBtn}>
             Register Now
             <ArrowRight size={16} className={styles.arrowIcon} />
           </Link>

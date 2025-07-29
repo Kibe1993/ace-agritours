@@ -12,3 +12,6 @@ body {
   background-color: #f5f5dc;
   font-family: "Outfit";
 }
+html {
+  scroll-behavior: smooth;
+}

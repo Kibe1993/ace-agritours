@@ -8,11 +8,16 @@ export default function OurVisitCard({ item }: { item: FarmVisit }) {
   return (
     <div className={styles.card}>
       <div className={styles.imageWrapper}>
-        <Image src={item.image} alt={item.name} fill className={styles.image} />
+        <Image
+          src={item.images[0]}
+          alt={item.title}
+          fill
+          className={styles.image}
+        />
       </div>
 
       <div className={styles.content}>
-        <h3 className={styles.title}>{item.name}</h3>
+        <h3 className={styles.title}>{item.title}</h3>
 
         <div className={styles.meta}>
           <span className={styles.metaItem}>
@@ -28,7 +33,7 @@ export default function OurVisitCard({ item }: { item: FarmVisit }) {
       </div>
 
       <div className={styles.linkWrapper}>
-        <Link href={"#"} className={styles.link}>
+        <Link href={`/farmvisit/${item.slug}`} className={styles.link}>
           View More Details
         </Link>
       </div>

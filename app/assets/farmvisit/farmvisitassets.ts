@@ -346,6 +346,7 @@ export const farmVisits: FarmVisit[] = [
 
 export interface VisitSchedule {
   id: string;
+  slug: string;
   title: string;
   status: "Confirmed" | "Pending" | "Completed";
   location: string;
@@ -355,9 +356,11 @@ export interface VisitSchedule {
   guests: number;
   image: StaticImageData;
 }
+
 export const upcomingVisits: VisitSchedule[] = [
   {
     id: "1",
+    slug: "green-valley-livestock-farm",
     title: "Green Valley Livestock Farm",
     status: "Confirmed",
     location: "Nakuru",
@@ -369,6 +372,7 @@ export const upcomingVisits: VisitSchedule[] = [
   },
   {
     id: "2",
+    slug: "highland-coffee-plantation",
     title: "Highland Coffee Plantation",
     status: "Pending",
     location: "Kiambu",
@@ -380,6 +384,7 @@ export const upcomingVisits: VisitSchedule[] = [
   },
   {
     id: "3",
+    slug: "eco-harmony-organic-farm",
     title: "Eco-Harmony Organic Farm",
     status: "Confirmed",
     location: "Meru",

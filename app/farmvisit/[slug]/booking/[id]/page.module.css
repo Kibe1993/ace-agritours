@@ -1,0 +1,76 @@
+/* BookingPage.module.css */
+.section {
+  background-color: #949db5;
+}
+.container {
+  max-width: 700px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: rgb(172, 217, 48);
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin-top: 100px;
+}
+
+.heading {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #07132e;
+  text-align: center;
+}
+
+.meta {
+  display: grid;
+  padding: 2%;
+  border-radius: 15px;
+  grid-template-columns: 1fr 1fr;
+  background-color: rgb(151, 190, 45);
+  gap: 1rem 2rem;
+  margin-bottom: 2rem;
+}
+
+.detail {
+  font-size: 0.95rem;
+  color: #dfe4ec;
+}
+
+.label {
+  font-weight: 600;
+  color: #091b35;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  padding: 0.75rem;
+  border: 1px solid #dfe4ec;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.button {
+  background-color: #12af21;
+  color: white;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.button:hover {
+  background-color: #0f9c1d;
+}

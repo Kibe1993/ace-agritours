@@ -57,7 +57,10 @@ export default function PlannedVisits() {
                 </div>
 
                 <div className={styles.cardFooter}>
-                  <Link href={`/book/${visit.id}`} className={styles.bookNow}>
+                  <Link
+                    href={`/farmvisit/${visit.slug}/booking/${visit.id}`}
+                    className={styles.bookNow}
+                  >
                     Book Now
                   </Link>
                 </div>

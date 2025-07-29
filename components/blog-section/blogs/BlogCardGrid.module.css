@@ -6,8 +6,9 @@
 }
 
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 80%;
+  width: 100%;
+  margin: 0, auto;
 }
 
 .heading {
@@ -21,7 +22,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  gap: 1rem;
   align-items: stretch;
 }
 

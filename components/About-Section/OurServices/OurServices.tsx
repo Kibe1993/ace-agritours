@@ -120,7 +120,7 @@ export default function OurServicesSection() {
                 </div>
               </div>
 
-              <Link href="/services" className={styles.seeAllButton}>
+              <Link href="/about" className={styles.seeAllButton}>
                 See All →
               </Link>
             </div>

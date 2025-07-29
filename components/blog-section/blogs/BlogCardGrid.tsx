@@ -24,7 +24,7 @@ export default function BlogCardGrid({ blogs }: BlogCardGridProps) {
 
   return (
     <section className={styles.gridSection}>
-      <div className="container">
+      <div className={styles.container}>
         <h2 className={styles.heading}>View Blogs Here</h2>
         <div className={styles.grid}>
           {visibleBlogs.map((blog) => (

@@ -9,7 +9,7 @@ export default function InitiativeSection() {
       title: "Plan Your Visit",
       message:
         "Book a guided tour to one of our partner farms and experience agriculture firsthand.",
-      link: "Browse Blogs",
+      link: "Book Now",
     },
     {
       icon: <Book size={28} />,
@@ -46,7 +46,18 @@ export default function InitiativeSection() {
               <h4 className={styles.title}>{item.title}</h4>
               <p className={styles.message}>{item.message}</p>
               {item.link && (
-                <Link href="#" className={styles.link}>
+                <Link
+                  href={`${
+                    item.link === "Donate Now"
+                      ? "/donate"
+                      : item.link === "Book Now"
+                      ? "/farmvisit#plannedvisits "
+                      : item.link === "Read Blogs"
+                      ? "/blog"
+                      : null
+                  }`}
+                  className={styles.link}
+                >
                   {item.link}
                 </Link>
               )}
@@ -55,10 +66,10 @@ export default function InitiativeSection() {
         </div>
 
         <div className={styles.ctaButtons}>
-          <Link href="#" className={styles.cta}>
+          <Link href="/farmvisit#plannedvisits" className={styles.cta}>
             Get Started Today
           </Link>
-          <Link href="/contacts" className={styles.cta}>
+          <Link href="/contact" className={styles.cta}>
             Contact Us
           </Link>
         </div>

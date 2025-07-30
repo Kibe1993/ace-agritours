@@ -19,7 +19,7 @@ export default function WhyUsGrid() {
             <WhyUsItemCard key={index} item={item} />
           ))}
         </main>
-        <Link href={"/Farmvisit"} className={styles.button}>
+        <Link href={"/farmvisit"} className={styles.button}>
           See Out Visits
         </Link>
       </div>

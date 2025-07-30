@@ -19,7 +19,7 @@ export default function WhyUsItemCard({ item }: { item: WhyUsCard }) {
       <div className={styles.content}>
         <h4 className={styles.title}>{item.title}</h4>
         <p className={styles.description}>{item.description}</p>
-        <Link href="/contact" className={styles.link}>
+        <Link href="/about" className={styles.link}>
           More Info →
         </Link>
       </div>

@@ -39,10 +39,10 @@ export default function Hero() {
             transforms communities.
           </p>
           <div className={styles.callToActions}>
-            <Link href="#" className={styles.buttonLink}>
+            <Link href="/farmvisit#plannedvisits" className={styles.buttonLink}>
               Plan Your Farm Visit <ArrowRight size={18} />
             </Link>
-            <Link href="#" className={styles.outlineButton}>
+            <Link href="/blog" className={styles.outlineButton}>
               Read Our Stories <ArrowRight size={18} />
             </Link>
           </div>

@@ -54,7 +54,7 @@ export default function OurVisitsGrid() {
           ))}
         </div>
 
-        <Link href="/farmvisit/planned" className={styles.link}>
+        <Link href="/farmvisit#plannedvisits" className={styles.link}>
           Only for You →
         </Link>
       </div>

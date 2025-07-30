@@ -1,0 +1,56 @@
+/* components/AdminNavbar.module.css */
+
+.section {
+  background-color: #3f4b39;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav {
+  max-width: 80%;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 70px;
+  width: auto;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.navLinks {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.navItem {
+  display: flex;
+}
+
+.navLink {
+  text-decoration: none;
+  color: #333;
+  background: yellow;
+  padding: 8px 20;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  border-radius: 18px;
+}
+
+.navLink:hover {
+  color: #0070f3;
+}

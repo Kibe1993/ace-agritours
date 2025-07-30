@@ -15,7 +15,7 @@ export default function AboutHeroSection() {
             sustainable agriculture
           </p>
 
-          <Link href="#" className={styles.buttonLink}>
+          <Link href="/farmvisit#plannedvisits" className={styles.buttonLink}>
             Plan Your Farm Visit <ArrowRight size={18} />
           </Link>
         </div>

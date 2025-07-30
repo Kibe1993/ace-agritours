@@ -23,8 +23,8 @@ export default function PartnerGrid() {
         </main>
 
         <div className={styles.buttonWrapper}>
-          <Link href="/partners" className={styles.button}>
-            See All Partners →
+          <Link href="/contact" className={styles.button}>
+            Become A Partner →
           </Link>
         </div>
       </div>

@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-
 import "./globals.css";
-import Navbar from "@/components/navbar-footer/Navbar/Navbar";
-import Footer from "@/components/navbar-footer/Footer/Footer";
+import LayoutWrapper from "@/components/LayoutWrapper";
 
 export const metadata: Metadata = {
   title: "Ace-Agri-Tours",
@@ -11,15 +9,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body>
-        <Navbar />
-        {children}
-        <Footer />
+        <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
   );

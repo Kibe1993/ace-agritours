@@ -49,7 +49,7 @@ export default function FeaturedCard({ item }: { item: FarmVisit }) {
             Learn More
           </Link>
           <Link href="/farmvisit" className={styles.primaryBtn}>
-            Register Now
+            Planned Visits
             <ArrowRight size={16} className={styles.arrowIcon} />
           </Link>
         </div>

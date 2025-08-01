@@ -9,7 +9,8 @@ export default function DashboardHeader() {
         <div className={styles.subContainer}>
           <div className={styles.messageBox}>
             <p className={styles.message}>
-              Welcome back! Here's what's happening with your farm tours
+              Welcome back! Here&apos;s what&apos;s happening with your farm
+              tours
             </p>
           </div>
         </div>

@@ -19,6 +19,7 @@ import { $getSelection, $isRangeSelection } from "lexical";
 
 import styles from "./editor.module.css";
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
+import type { InitialConfigType } from "@lexical/react/LexicalComposer";
 
 const theme = {
   paragraph: styles.paragraph,
@@ -74,10 +75,10 @@ export default function LexicalEditor({
 }: {
   onChange: (value: string) => void;
 }) {
-  const initialConfig = {
+  const initialConfig: InitialConfigType = {
     namespace: "MyEditor",
     theme,
-    onError: (error: any) => {
+    onError: (error: Error) => {
       console.error("Lexical Error:", error);
     },
     editorState: null,
@@ -99,7 +100,7 @@ export default function LexicalEditor({
         <HistoryPlugin />
         <LinkPlugin />
         <ListPlugin />
-        <LinkEditor /> {/* 👈 Your inline link UI */}
+        <LinkEditor />
         <OnChangeHandler onChange={onChange} />
       </div>
     </LexicalComposer>

@@ -1,5 +1,6 @@
+// app/admin/layout.tsx
+import AdminShell from "@/components/admin/aside/Adminshell";
 import AdminNavbar from "@/components/admin/Navbar/AdminNavbar";
-import "./admin-global.css";
 
 import type { Metadata } from "next";
 
@@ -17,7 +18,7 @@ export default function AdminLayout({
     <html lang="en">
       <body>
         <AdminNavbar />
-        <main>{children}</main>
+        <AdminShell>{children}</AdminShell>
       </body>
     </html>
   );

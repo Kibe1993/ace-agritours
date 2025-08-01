@@ -18,3 +18,105 @@ a {
 a:hover {
   color: #0051a3;
 }
+
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.sidebar {
+  background-color: #f4f4f4;
+  min-height: 100vh;
+  width: 220px;
+  padding: 1rem;
+  border-right: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: relative;
+  transition: width 0.3s ease;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #222;
+}
+
+.link {
+  display: block;
+  padding: 0.5rem 0;
+  color: #333;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.link:hover {
+  color: #0070f3;
+  transform: translateX(4px);
+}
+
+.active {
+  font-weight: bold;
+  color: #0070f3;
+}
+
+.toggle-btn {
+  position: absolute;
+  top: 100px;
+  left: 250px;
+  z-index: 1000;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: left 0.3s ease;
+}
+
+.collapsed-btn {
+  left: 10px;
+}
+
+.sidebar {
+  width: 250px;
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+.sidebar.collapsed {
+  width: 0;
+}
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+.sidebar.collapsed {
+  width: 0;
+}
+
+.admin-main {
+  flex-grow: 1;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.admin-main.expanded {
+  margin-left: 0;
+  width: 100%;
+}

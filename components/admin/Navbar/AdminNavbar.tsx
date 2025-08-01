@@ -6,13 +6,7 @@ import LogoImg from "@/public/ace.png";
 import styles from "./AdminNavbar.module.css";
 
 export default function AdminNavbar() {
-  const links = [
-    { href: "/", label: "Main Site" },
-    { href: "/admin", label: "Home" },
-    { href: "/admin/add-blog", label: "Add Blog" },
-    { href: "/admin/add-farmvisit", label: "Add Farm Visit" },
-    { href: "/", label: "Logout" },
-  ];
+  const links = [{ href: "/", label: "Logout" }];
 
   return (
     <section className={styles.section}>

@@ -1,0 +1,27 @@
+.container {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 1;
+  padding-bottom: 0.5rem;
+}
+
+.scrollableList {
+  overflow-y: auto;
+  flex: 1;
+  max-height: 300px;
+  padding-right: 0.5rem;
+}

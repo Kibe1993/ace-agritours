@@ -1,0 +1,35 @@
+.editorContainer {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.editorInput {
+  min-height: 200px;
+  outline: none;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.linkEditorContainer {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.linkInput {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.linkButton {
+  padding: 0.5rem 1rem;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}

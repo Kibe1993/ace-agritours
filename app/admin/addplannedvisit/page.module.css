@@ -69,3 +69,42 @@
 .submitBtn:hover {
   background-color: #1d4ed8;
 }
+.uploadBox {
+  background: #f0f0f0;
+  border: 2px dashed #ccc;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.previewBox {
+  margin-top: 1rem;
+  position: relative;
+  display: inline-block;
+}
+
+.previewImg {
+  width: 200px;
+  height: auto;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+}
+
+.removeBtn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(255, 0, 0, 0.8);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+}

@@ -1,10 +1,50 @@
+"use client";
+
+import { useState } from "react";
+import axios from "axios";
 import styles from "./page.module.css";
+import { toast } from "react-toastify";
 
 export default function AddTestimonialPage() {
+  const [loading, setLoading] = useState(false);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+
+    if (selectedFile) {
+      formData.set("image", selectedFile);
+    }
+
+    try {
+      setLoading(true);
+      toast.info("Submitting Testimonial");
+
+      const res = await axios.post("/api/testimonials", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      toast.success("Testimonial submitted successfully!");
+      form.reset();
+      setPreview(null);
+      setSelectedFile(null);
+    } catch (err) {
+      console.error("Submission failed", err);
+      toast.error("Failed to submit testimonial.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <h1 className={styles.heading}>Add Your Testimony Here</h1>
-      <form className={styles.form}>
+      <form onSubmit={handleSubmit} className={styles.form}>
         <div>
           <label className={styles.label}>Name</label>
           <input required type="text" name="name" className={styles.input} />
@@ -12,13 +52,7 @@ export default function AddTestimonialPage() {
 
         <div>
           <label className={styles.label}>Title</label>
-          <input
-            required
-            type="text"
-            name="title"
-            placeholder="e.g. Aspiring Farmer"
-            className={styles.input}
-          />
+          <input required type="text" name="title" className={styles.input} />
         </div>
 
         <div>
@@ -57,17 +91,40 @@ export default function AddTestimonialPage() {
             📸 Click here to upload your image
           </label>
           <input
-            type="file"
             id="imageUpload"
             name="image"
+            type="file"
             accept="image/*"
-            required
+            required={!preview}
             className={styles.hiddenFileInput}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                setSelectedFile(file);
+                setPreview(URL.createObjectURL(file));
+              }
+            }}
           />
         </div>
 
-        <button type="submit" className={styles.button}>
-          Submit Testimonial
+        {preview && (
+          <div className={styles.previewWrapper}>
+            <img src={preview} alt="Preview" className={styles.previewImage} />
+            <button
+              type="button"
+              onClick={() => {
+                setPreview(null);
+                setSelectedFile(null);
+              }}
+              className={styles.removeButton}
+            >
+              ❌ Remove Image
+            </button>
+          </div>
+        )}
+
+        <button type="submit" className={styles.button} disabled={loading}>
+          {loading ? "Submitting..." : "Submit Testimonial"}
         </button>
       </form>
     </div>

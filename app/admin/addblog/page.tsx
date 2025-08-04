@@ -1,15 +1,66 @@
 "use client";
 
 import { useRef, useState } from "react";
+import axios from "axios";
 import LexicalEditor from "@/components/editor/LexicalEditor";
 import styles from "./page.module.css";
+import { toast } from "react-toastify";
 
 export default function AddBlogPage() {
   const [description, setDescription] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleUploadClick = () => {
     fileInputRef.current?.click();
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setSelectedImage(null);
+    setPreviewUrl(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+
+    formData.append("description", description);
+    if (selectedImage) {
+      formData.set("image", selectedImage);
+    }
+
+    try {
+      const res = await axios.post("/api/blogs", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      toast.success("Blog post submitted successfully!");
+      form.reset();
+      setDescription("");
+      handleRemoveImage();
+    } catch (err: any) {
+      console.error("Submission error:", err);
+      toast.error(err.response?.data?.message || "Failed to submit blog post");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -24,13 +75,17 @@ export default function AddBlogPage() {
           </div>
 
           <div className={styles.actions}>
-            <button className={styles.previewBtn}>Preview</button>
-            <button className={styles.publishBtn}>Save & Publish</button>
+            <button type="button" className={styles.previewBtn}>
+              Preview
+            </button>
+            <button type="button" className={styles.publishBtn}>
+              Save & Publish
+            </button>
           </div>
         </header>
 
         <main className={styles.main}>
-          <form className={styles.form}>
+          <form className={styles.form} onSubmit={handleSubmit}>
             <label htmlFor="title">Title</label>
             <input
               type="text"
@@ -64,7 +119,24 @@ export default function AddBlogPage() {
               className={styles.uploadPlaceholder}
               onClick={handleUploadClick}
             >
-              📷 Click to upload cover image
+              {previewUrl ? (
+                <div className={styles.previewWrapper}>
+                  <img
+                    src={previewUrl}
+                    alt="Preview"
+                    className={styles.imagePreview}
+                  />
+                  <button
+                    type="button"
+                    className={styles.removeImageBtn}
+                    onClick={handleRemoveImage}
+                  >
+                    ❌ Remove
+                  </button>
+                </div>
+              ) : (
+                <span>📷 Click to upload cover image</span>
+              )}
             </div>
             <input
               type="file"
@@ -72,8 +144,9 @@ export default function AddBlogPage() {
               name="image"
               accept="image/*"
               ref={fileInputRef}
+              onChange={handleImageChange}
               className={styles.hiddenFileInput}
-              required
+              required={!previewUrl}
             />
 
             <label htmlFor="author">Author</label>
@@ -85,8 +158,12 @@ export default function AddBlogPage() {
               required
             />
 
-            <button type="submit" className={styles.submitBtn}>
-              Add Blog
+            <button
+              type="submit"
+              className={styles.submitBtn}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Submitting..." : "Add Blog"}
             </button>
           </form>
 
@@ -94,10 +171,10 @@ export default function AddBlogPage() {
             <h2>Publish Settings</h2>
 
             <div className={styles.statusActions}>
-              <button>Pending</button>
-              <button>Featured</button>
-              <button>Edit</button>
-              <button>Delete</button>
+              <button type="button">Pending</button>
+              <button type="button">Featured</button>
+              <button type="button">Edit</button>
+              <button type="button">Delete</button>
             </div>
 
             <div className={styles.statusInfo}>

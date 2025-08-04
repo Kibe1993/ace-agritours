@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import LayoutWrapper from "@/components/LayoutWrapper";
+import { ToastContainer } from "react-toastify";
 
 export const metadata: Metadata = {
   title: "Ace-Agri-Tours",
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <ToastContainer position="top-right" theme="dark" />
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>

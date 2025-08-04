@@ -55,11 +55,15 @@ export default function AddBlogPage() {
       form.reset();
       setDescription("");
       handleRemoveImage();
-    } catch (err: any) {
+    } catch (err: unknown) {
+      let message = "Failed to submit blog post";
+
+      if (axios.isAxiosError(err)) {
+        message = err.response?.data?.message || message;
+      }
+
       console.error("Submission error:", err);
-      toast.error(err.response?.data?.message || "Failed to submit blog post");
-    } finally {
-      setIsSubmitting(false);
+      toast.error(message);
     }
   };
 

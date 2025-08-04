@@ -43,9 +43,14 @@ export default function AddPlannedVisitPage() {
       toast.success("Planned visit saved successfully!");
       form.reset();
       handleRemoveImage();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Failed to save planned visit:", error);
-      toast.error("Error saving planned visit.");
+      let message = "Error saving planned visit.";
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data?.message || message;
+      }
+
+      toast.error(message);
     } finally {
       setIsSubmitting(false);
     }

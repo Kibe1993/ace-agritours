@@ -7,12 +7,14 @@ import styles from "./AdminSidebar.module.css";
 
 const links = [
   { href: "/admin/addblog", label: "Add Blog" },
-  { href: "/admin/add-farmvisit", label: "Add Farm Visit" },
+  { href: "/admin/addfarmvisit", label: "Add Farm Visit" },
+  { href: "/admin/addplannedvisit", label: "Add Planned Visit" },
 ];
 
 const manage = [
-  { href: "/admin/manage/blogs", label: "Manage Blogs" },
-  { href: "/admin/manage/farmvisits", label: "Manage Farm Visits" },
+  { href: "/admin/manage/manageblog", label: " Blogs" },
+  { href: "/admin/manage/managefarmvisit", label: " Farm Visits" },
+  { href: "/admin/manage/manageplannedvisits", label: " Planned Visits" },
 ];
 
 export default function AdminSidebar() {

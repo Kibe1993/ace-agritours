@@ -1,0 +1,92 @@
+.container {
+  max-width: 600px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.heading {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #2e2e2e;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #333;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s ease-in-out;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  border-color: #22c55e; /* green-500 */
+}
+
+.textarea {
+  resize: vertical;
+}
+
+.button {
+  background-color: #16a34a; /* green-600 */
+  color: white;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.button:hover {
+  background-color: #15803d; /* green-700 */
+}
+
+.fileUploadWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.uploadLabel {
+  display: inline-block;
+  background-color: #f0fdf4; /* light green */
+  border: 2px dashed #22c55e;
+  color: #16a34a;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: background 0.2s ease;
+}
+
+.uploadLabel:hover {
+  background-color: #dcfce7; /* hover green */
+}
+
+.hiddenFileInput {
+  display: none;
+}

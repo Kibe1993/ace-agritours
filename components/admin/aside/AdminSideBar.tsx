@@ -9,6 +9,8 @@ const links = [
   { href: "/admin/addblog", label: "Add Blog" },
   { href: "/admin/addfarmvisit", label: "Add Farm Visit" },
   { href: "/admin/addplannedvisit", label: "Add Planned Visit" },
+  { href: "/admin/whyus", label: "Why Us" },
+  { href: "/admin/addpartner", label: "Add A Partner" },
 ];
 
 const manage = [

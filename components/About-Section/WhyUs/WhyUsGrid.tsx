@@ -20,7 +20,7 @@ export default function WhyUsGrid() {
           ))}
         </main>
         <Link href={"/farmvisit"} className={styles.button}>
-          See Out Visits
+          See Our Past Farm Visits
         </Link>
       </div>
     </section>

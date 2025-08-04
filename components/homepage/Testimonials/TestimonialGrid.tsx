@@ -22,7 +22,7 @@ export default function TestimonialGrid() {
         </main>
         <p className={styles.storyBanner}>Have a story to share?</p>
 
-        <Link href={"#"} className={styles.buttonLink}>
+        <Link href={"/add-content"} className={styles.buttonLink}>
           Submit Your Testmonials
         </Link>
       </div>

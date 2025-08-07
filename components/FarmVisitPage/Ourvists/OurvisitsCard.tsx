@@ -27,7 +27,10 @@ export default function OurVisitCard({ item }: { item: FarmVisit }) {
           <span className={styles.metaItem}>{item.category}</span>
         </div>
 
-        <p className={styles.description}>{item.description}</p>
+        <div
+          className={styles.description}
+          dangerouslySetInnerHTML={{ __html: item.description }}
+        />
 
         <p className={styles.guests}>👥 {item.guests} Guests</p>
       </div>

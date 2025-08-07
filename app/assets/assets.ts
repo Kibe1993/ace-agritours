@@ -71,52 +71,6 @@ export const heroFeatures: HeroFeature[] = [
   },
 ];
 
-export const FeaturedVisits: FarmVisit[] = [
-  {
-    title: "Nyeri Coffee Plantation",
-    location: "Nyeri County",
-    date: "March 15, 2024",
-    visitors: 45,
-    description:
-      "Experience premium coffee farming in the highlands of Nyeri. Learn about sustainable coffee cultivation and processing.",
-    subtitle: "What You'll Learn",
-    tags: ["Coffee Processing", "Organic Farming", "Cooperatives"],
-    image: coffee,
-  },
-  {
-    title: "Kinangop Dairy Farm",
-    location: "Nyandarua County",
-    date: "April 5, 2024",
-    visitors: 32,
-    description:
-      "Visit Kinangop Dairy Farm to explore modern livestock management and sustainable milk production in a cool highland setting.",
-    subtitle: "What You'll Learn",
-    tags: ["Dairy Farming", "Livestock Nutrition", "Milk Processing"],
-    image: dairy,
-  },
-  {
-    title: "Urban Poultry Farm",
-    location: "Nairobi County",
-    date: "May 12, 2024",
-    visitors: 27,
-    description:
-      "Discover how poultry farming thrives in an urban environment. Learn about space-saving coops, organic feeding, and egg production.",
-    subtitle: "What You'll Learn",
-    tags: ["Poultry Farming", "Urban Agriculture", "Egg Production"],
-    image: poutry,
-  },
-  {
-    title: "Maguna Pig Farm",
-    location: "Embu County",
-    date: "June 8, 2024",
-    visitors: 41,
-    description:
-      "Tour Maguna Pig Farm to understand efficient pig rearing, waste management, and value-added pork production practices.",
-    subtitle: "What You'll Learn",
-    tags: ["Pig Farming", "Waste Recycling", "Pork Processing"],
-    image: pigs,
-  },
-];
 
 export interface Testimonial {
   id: string;

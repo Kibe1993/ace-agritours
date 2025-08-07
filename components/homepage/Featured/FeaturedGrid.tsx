@@ -1,7 +1,8 @@
-import { FeaturedVisits } from "@/app/assets/assets";
+
 import FeaturedCard from "./FeaturedCard";
 import styles from "./FeaturedGrid.module.css";
 import Link from "next/link";
+import { farmVisits } from "@/app/assets/farmvisit/farmvisitassets";
 
 export default function FeaturedGrid() {
   return (
@@ -17,7 +18,7 @@ export default function FeaturedGrid() {
         </header>
 
         <main className={styles.grid}>
-          {FeaturedVisits.slice(0, 4).map((item, index) => (
+          {farmVisits.slice(0, 4).map((item, index) => (
             <FeaturedCard key={index} item={item} />
           ))}
         </main>

@@ -10,6 +10,7 @@ import {
   Send,
   CalendarCheck,
 } from "lucide-react";
+import BlogSubscription from "@/components/blog-section/subscribe/BlogSubscription";
 
 export default function ContactPage() {
   return (
@@ -26,30 +27,7 @@ export default function ContactPage() {
 
       {/* Newsletter Section */}
       <section className={styles.newsletter}>
-        <div className={styles.newsletterContainer}>
-          <h2>
-            <CalendarCheck className={styles.icon} />
-            Subscribe to Our Newsletter
-          </h2>
-          <p>
-            Get notified about the next planned farm visit and our latest blog
-            posts directly in your email.
-          </p>
-
-          <form className={styles.form}>
-            <div className={styles.formGroup}>
-              <input
-                type="email"
-                name="email"
-                placeholder="you@example.com"
-                required
-              />
-            </div>
-            <button className={styles.button} type="submit">
-              <Send className={styles.icon} /> Subscribe
-            </button>
-          </form>
-        </div>
+         <BlogSubscription/>
       </section>
 
       {/* Contact Section */}
@@ -123,43 +101,54 @@ export default function ContactPage() {
           {/* Right: Contact Form */}
           <div className={styles.contactForm}>
             <h3>Send Us a Message</h3>
-            <form>
-              <div className={styles.formGroup}>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Your Name"
-                  required
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Your Email"
-                  required
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <input
-                  type="text"
-                  name="contact"
-                  placeholder="Phone or WhatsApp"
-                  required
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <textarea
-                  name="message"
-                  rows={5}
-                  placeholder="Your Message"
-                  required
-                />
-              </div>
-              <button className={styles.button} type="submit">
-                <Send className={styles.icon} /> Send Message
-              </button>
-            </form>
+            <form
+  action="https://formspree.io/f/xgvzpoqo"
+  method="POST"
+>
+  <div className={styles.formGroup}>
+    <input
+      type="text"
+      name="name"
+      placeholder="Your Name"
+      required
+    />
+  </div>
+  <div className={styles.formGroup}>
+    <input
+      type="email"
+      name="email"
+      placeholder="Your Email"
+      required
+    />
+  </div>
+  <div className={styles.formGroup}>
+    <input
+      type="text"
+      name="contact"
+      placeholder="Phone or WhatsApp"
+      required
+    />
+  </div>
+  <div className={styles.formGroup}>
+    <textarea
+      name="message"
+      rows={5}
+      placeholder="Your Message"
+      required
+    />
+  </div>
+
+
+  <input type="text" name="_gotcha" style={{ display: "none" }} />
+
+
+  <input type="hidden" name="_next" value="/thank-you" />
+
+  <button className={styles.button} type="submit">
+    <Send className={styles.icon} /> Send Message
+  </button>
+</form>
+
           </div>
         </div>
       </section>

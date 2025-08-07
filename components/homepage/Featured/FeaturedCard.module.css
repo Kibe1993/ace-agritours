@@ -75,7 +75,7 @@
 
 .tags {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: left;
   flex-wrap: wrap;
   gap: 8px;
   padding: 0;
@@ -83,11 +83,12 @@
 }
 
 .tag {
-  background-color: #e2e8f0;
   color: #1e293b;
   padding: 4px 10px;
   border-radius: 16px;
   font-size: 0.8rem;
+  list-style: square;
+  margin-left: 20px;
 }
 
 .buttons {

@@ -48,3 +48,15 @@ export async function POST(req: Request) {
     );
   }
 }
+export async function GET() {
+  try {
+    await connectDB();
+
+    const partners = await Partner.find().sort({ createdAt: -1 });
+
+    return NextResponse.json({ partners }, { status: 200 });
+  } catch (error) {
+    console.error("Failed to fetch partners", error);
+    return NextResponse.json({ message: "Error fetching partners" }, { status: 500 });
+  }
+}

@@ -1,45 +1,88 @@
 "use client";
 
-import { LexicalComposer } from "@lexical/react/LexicalComposer";
+import {
+  LexicalComposer,
+  type InitialConfigType,
+} from "@lexical/react/LexicalComposer";
 import { ListNode, ListItemNode } from "@lexical/list";
+import { LinkNode } from "@lexical/link";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
+import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
+import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
+import { $generateHtmlFromNodes } from "@lexical/html";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { ListPlugin } from "@lexical/react/LexicalListPlugin";
+
+import { $getSelection, $isRangeSelection, $getRoot } from "lexical";
+
 import { TOGGLE_LINK_COMMAND } from "@lexical/link";
 
-import { ListPlugin } from "@lexical/react/LexicalListPlugin";
-import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $generateHtmlFromNodes } from "@lexical/html";
-import { LinkNode } from "@lexical/link";
-
-import { useState } from "react";
-import { $getSelection, $isRangeSelection } from "lexical";
-
+import {
+  useImperativeHandle,
+  forwardRef,
+  type ForwardedRef,
+  useState,
+} from "react";
 import styles from "./editor.module.css";
-import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
-import type { InitialConfigType } from "@lexical/react/LexicalComposer";
+
+// ✅ Define the type of methods the parent can call
+export interface LexicalEditorHandle {
+  clearEditor: () => void;
+}
 
 const theme = {
   paragraph: styles.paragraph,
 };
 
-function OnChangeHandler({ onChange }: { onChange: (html: string) => void }) {
+// ✅ Subcomponent inside LexicalComposer
+function InnerEditor({
+  onChange,
+  forwardedRef,
+}: {
+  onChange: (html: string) => void;
+  forwardedRef: ForwardedRef<LexicalEditorHandle>;
+}) {
   const [editor] = useLexicalComposerContext();
 
+  useImperativeHandle(forwardedRef, () => ({
+    clearEditor() {
+      editor.update(() => {
+        $getRoot().clear();
+      });
+    },
+  }));
+
   return (
-    <OnChangePlugin
-      onChange={(editorState) => {
-        editorState.read(() => {
-          const html = $generateHtmlFromNodes(editor, null);
-          onChange(html);
-        });
-      }}
-    />
+    <div className={styles.editorContainer}>
+      <RichTextPlugin
+        contentEditable={<ContentEditable className={styles.editorInput} />}
+        placeholder={
+          <div className={styles.editorPlaceholder}>
+            Enter your blog content...
+          </div>
+        }
+        ErrorBoundary={LexicalErrorBoundary}
+      />
+      <HistoryPlugin />
+      <LinkPlugin />
+      <ListPlugin />
+      <LinkEditor />
+      <OnChangePlugin
+        onChange={(editorState) => {
+          editorState.read(() => {
+            const html = $generateHtmlFromNodes(editor, null);
+            onChange(html);
+          });
+        }}
+      />
+    </div>
   );
 }
 
+// ✅ Link toolbar inside editor
 function LinkEditor() {
   const [editor] = useLexicalComposerContext();
   const [url, setUrl] = useState("");
@@ -70,11 +113,11 @@ function LinkEditor() {
   );
 }
 
-export default function LexicalEditor({
-  onChange,
-}: {
-  onChange: (value: string) => void;
-}) {
+// ✅ Parent Component with LexicalComposer at the top
+const LexicalEditor = forwardRef(function LexicalEditor(
+  { onChange }: { onChange: (value: string) => void },
+  ref: ForwardedRef<LexicalEditorHandle>
+) {
   const initialConfig: InitialConfigType = {
     namespace: "MyEditor",
     theme,
@@ -87,22 +130,9 @@ export default function LexicalEditor({
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <div className={styles.editorContainer}>
-        <RichTextPlugin
-          contentEditable={<ContentEditable className={styles.editorInput} />}
-          placeholder={
-            <div className={styles.editorPlaceholder}>
-              Enter your blog content...
-            </div>
-          }
-          ErrorBoundary={LexicalErrorBoundary}
-        />
-        <HistoryPlugin />
-        <LinkPlugin />
-        <ListPlugin />
-        <LinkEditor />
-        <OnChangeHandler onChange={onChange} />
-      </div>
+      <InnerEditor onChange={onChange} forwardedRef={ref} />
     </LexicalComposer>
   );
-}
+});
+
+export default LexicalEditor;

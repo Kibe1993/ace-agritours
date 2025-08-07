@@ -5,11 +5,14 @@ import axios from "axios";
 import LexicalEditor from "@/components/editor/LexicalEditor";
 import styles from "./page.module.css";
 import { toast } from "react-toastify";
+import type { LexicalEditorHandle } from "@/components/editor/LexicalEditor";
 
 export default function AddFarmVisitPage() {
   const [description, setDescription] = useState("");
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const editorRef = useRef<LexicalEditorHandle | null>(null);
 
   const handleUploadClick = () => fileInputRef.current?.click();
 
@@ -26,10 +29,14 @@ export default function AddFarmVisitPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.currentTarget as HTMLFormElement;
+    setIsSubmitting(true);
+
+    const toastId = toast.info("Submitting farm visit...", {
+      autoClose: false,
+    });
+
     const formData = new FormData(form);
-
     formData.append("description", description);
-
     selectedImages.forEach((img) => {
       formData.append("images", img);
     });
@@ -37,13 +44,30 @@ export default function AddFarmVisitPage() {
     try {
       const response = await axios.post("/api/farmvisits", formData);
       console.log("Response:", response.data);
-      toast.success("Farm visit saved successfully!");
+
+      toast.update(toastId, {
+        render: "Farm visit saved successfully!",
+        type: "success",
+        autoClose: 3000,
+        isLoading: false,
+      });
+
       form.reset();
       setSelectedImages([]);
       setDescription("");
+
+      editorRef.current?.clearEditor?.();
+      //
     } catch (error) {
       console.error("Upload failed:", error);
-      toast.error("Error saving farm visit.");
+      toast.update(toastId, {
+        render: "Error saving farm visit.",
+        type: "error",
+        autoClose: 3000,
+        isLoading: false,
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -74,7 +98,6 @@ export default function AddFarmVisitPage() {
             placeholder="e.g. Blue Waters Aquafarm"
             required
           />
-
           <label htmlFor="location">Location</label>
           <input
             type="text"
@@ -83,7 +106,6 @@ export default function AddFarmVisitPage() {
             placeholder="e.g. Kiambu"
             required
           />
-
           <label htmlFor="area">Area</label>
           <input
             type="text"
@@ -92,13 +114,10 @@ export default function AddFarmVisitPage() {
             placeholder="e.g. Githunguri, Kiambu"
             required
           />
-
           <label htmlFor="date">Date</label>
           <input type="date" id="date" name="date" required />
-
           <label htmlFor="time">Time</label>
           <input type="time" id="time" name="time" required />
-
           <label htmlFor="category">Category</label>
           <select id="category" name="category" required>
             <option value="">Select Category</option>
@@ -107,10 +126,8 @@ export default function AddFarmVisitPage() {
             <option value="Livestock">Livestock</option>
             <option value="Poultry">Poultry</option>
           </select>
-
           <label htmlFor="guests">Expected Guests</label>
           <input type="number" id="guests" name="guests" required />
-
           <label htmlFor="trainer">Trainer</label>
           <input
             type="text"
@@ -119,7 +136,6 @@ export default function AddFarmVisitPage() {
             placeholder="e.g. Mr. Evans Otieno"
             required
           />
-
           <label htmlFor="highlights">Highlights (comma-separated)</label>
           <input
             type="text"
@@ -127,10 +143,9 @@ export default function AddFarmVisitPage() {
             name="highlights"
             placeholder="e.g. Cage fishing method, Fish harvesting demo"
           />
-
           <label htmlFor="description">Description</label>
-          <LexicalEditor onChange={setDescription} />
-
+          <LexicalEditor ref={editorRef} onChange={setDescription} />{" "}
+          {/* ✅ Pass ref */}
           <label htmlFor="treatmentSummary">Treatment Summary</label>
           <textarea
             id="treatmentSummary"
@@ -138,7 +153,6 @@ export default function AddFarmVisitPage() {
             rows={3}
             placeholder="e.g. Focus on cage fish farming and water quality optimization."
           />
-
           <label>Available Days</label>
           <div className={styles.checkboxGroup}>
             {weekdays.map((day) => (
@@ -148,7 +162,6 @@ export default function AddFarmVisitPage() {
               </label>
             ))}
           </div>
-
           <label htmlFor="images">Upload Images</label>
           <div className={styles.uploadPlaceholder} onClick={handleUploadClick}>
             📷 Click to upload images
@@ -163,7 +176,6 @@ export default function AddFarmVisitPage() {
             onChange={handleImageChange}
             className={styles.hiddenFileInput}
           />
-
           {/* Image Previews */}
           <div className={styles.imagePreviewGrid}>
             {selectedImages.map((img, idx) => (
@@ -175,7 +187,6 @@ export default function AddFarmVisitPage() {
               </div>
             ))}
           </div>
-
           <label htmlFor="email">Contact Email</label>
           <input
             type="email"
@@ -184,7 +195,6 @@ export default function AddFarmVisitPage() {
             placeholder="hello@example.com"
             required
           />
-
           <label htmlFor="phone">Contact Phone</label>
           <input
             type="tel"
@@ -193,9 +203,12 @@ export default function AddFarmVisitPage() {
             placeholder="+254700000000"
             required
           />
-
-          <button type="submit" className={styles.submitBtn}>
-            Add Farm Visit
+          <button
+            type="submit"
+            className={styles.submitBtn}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Submitting..." : "Add Farm Visit"}
           </button>
         </form>
 

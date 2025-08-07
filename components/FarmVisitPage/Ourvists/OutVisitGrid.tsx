@@ -24,7 +24,7 @@ export default function OurVisitsGrid() {
       : farmVisits.filter((v) => v.category === selectedCategory);
 
   return (
-    <section className={styles.section}>
+    <section className={styles.section} id="ourvisits">
       <div className={styles.container}>
         <div className={styles.header}>
           <h2>Our Previous Visits</h2>

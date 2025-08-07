@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/DB/connectDB";
 import { FarmVisit } from "@/lib/Models/farmvisit";
 import { uploadImageToCloudinary } from "@/lib/cloudinary/uploadImage";
 import { NextResponse } from "next/server";
+import slugify from "slugify";
 
 export async function POST(req: Request) {
   try {
@@ -10,6 +11,7 @@ export async function POST(req: Request) {
     const formData = await req.formData();
 
     const title = formData.get("title") as string;
+
     const location = formData.get("location") as string;
     const area = formData.get("area") as string;
     const date = formData.get("date") as string;
@@ -26,6 +28,7 @@ export async function POST(req: Request) {
     const availableDays = formData.getAll("availableDays") as string[];
 
     const imageFiles = formData.getAll("images") as File[];
+    const slug = slugify(title, { lower: true, strict: true });
 
     if (
       !title ||
@@ -62,6 +65,7 @@ export async function POST(req: Request) {
 
     const farmVisit = new FarmVisit({
       title,
+      slug,
       location,
       area,
       date,

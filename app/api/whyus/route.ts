@@ -46,3 +46,15 @@ export async function POST(req: Request) {
     );
   }
 }
+export async function GET() {
+  try {
+    await connectDB();
+
+    const whyUs = await WhyUs.find().sort({ createdAt: -1 });
+
+    return NextResponse.json({ whyUs }, { status: 200 });
+  } catch (error) {
+    console.error("Failed to fetch testimonials", error);
+    return NextResponse.json({ message: "Error fetching testimonials" }, { status: 500 });
+  }
+}

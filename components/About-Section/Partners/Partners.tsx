@@ -1,16 +1,17 @@
 import Link from "next/link";
-import { Partner } from "@/app/assets/assets";
+
 import styles from "./Partners.module.css";
+import { Partner } from "@/lib/TSInterfaces/typescriptinterface";
+import Image from "next/image";
 
 export default function PartnerCard({ item }: { item: Partner }) {
   return (
     <div className={styles.card}>
       <div className={styles.logoWrapper}>
-        <img
-          src={item.logo}
+        <Image
+          src={item.logo.url}
           alt={`${item.name} logo`}
-          width={80}
-          height={80}
+          fill
           className={styles.logo}
         />
       </div>

@@ -1,9 +1,33 @@
-import { testimonials } from "@/app/assets/assets";
+"use client";
+
+import { useEffect, useState } from "react";
+import axios from "axios";
 import styles from "./TestimonialGrid.module.css";
-import Link from "next/link";
 import TestimonialCard from "./TestimonialCard";
+import Link from "next/link";
+import { TestimonialType } from "@/lib/TSInterfaces/typescriptinterface";
 
 export default function TestimonialGrid() {
+  const [testimonials, setTestimonials] = useState<TestimonialType[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const res = await axios.get("/api/testimonials");
+        const all = res.data.testimonials as TestimonialType[];
+        const random = all.sort(() => 0.5 - Math.random()).slice(0, 3);
+        setTestimonials(random);
+      } catch (err) {
+        console.error("Failed to fetch testimonials", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
+
   return (
     <section className={styles.section}>
       <div className={styles.container}>
@@ -16,14 +40,18 @@ export default function TestimonialGrid() {
         </header>
 
         <main className={styles.grid}>
-          {testimonials.slice(0, 4).map((item, index) => (
-            <TestimonialCard key={index} item={item} />
-          ))}
+          {loading ? (
+            <p>Loading testimonials...</p>
+          ) : (
+            testimonials.map((item) => (
+              <TestimonialCard key={item._id} item={item} />
+            ))
+          )}
         </main>
-        <p className={styles.storyBanner}>Have a story to share?</p>
 
-        <Link href={"/add-content"} className={styles.buttonLink}>
-          Submit Your Testmonials
+        <p className={styles.storyBanner}>Have a story to share?</p>
+        <Link href="/add-content" className={styles.buttonLink}>
+          Submit Your Testimonials
         </Link>
       </div>
     </section>

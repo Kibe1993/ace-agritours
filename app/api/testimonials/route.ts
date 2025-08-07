@@ -53,3 +53,15 @@ export async function POST(req: Request) {
     );
   }
 }
+export async function GET() {
+  try {
+    await connectDB();
+
+    const testimonials = await Testimonial.find().sort({ createdAt: -1 });
+
+    return NextResponse.json({ testimonials }, { status: 200 });
+  } catch (error) {
+    console.error("Failed to fetch testimonials", error);
+    return NextResponse.json({ message: "Error fetching testimonials" }, { status: 500 });
+  }
+}

@@ -2,13 +2,14 @@ import { WhyUsCard } from "@/app/assets/assets";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./WhyUsCard.module.css";
+import { WhyUs } from "@/lib/TSInterfaces/typescriptinterface";
 
-export default function WhyUsItemCard({ item }: { item: WhyUsCard }) {
+export default function WhyUsItemCard({ item }: { item: WhyUs }) {
   return (
     <section className={styles.card}>
       <div className={styles.imageWrapper}>
         <Image
-          src={item.image}
+          src={item.image.url}
           alt={item.title}
           fill
           className={styles.image}
@@ -19,9 +20,6 @@ export default function WhyUsItemCard({ item }: { item: WhyUsCard }) {
       <div className={styles.content}>
         <h4 className={styles.title}>{item.title}</h4>
         <p className={styles.description}>{item.description}</p>
-        <Link href="/about" className={styles.link}>
-          More Info →
-        </Link>
       </div>
     </section>
   );

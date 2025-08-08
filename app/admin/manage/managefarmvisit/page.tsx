@@ -14,7 +14,7 @@ export default function ManagePastFarmVisitsPage() {
     const fetchFarmVisits = async () => {
       try {
         const res = await axios.get("/api/farmvisits");
-        const visitsWithId = res.data.farmvisits.map((item: any) => ({
+        const visitsWithId = res.data.farmvisits.map((item: FarmVisits) => ({
           ...item,
           id: item._id,
         }));
@@ -30,7 +30,7 @@ export default function ManagePastFarmVisitsPage() {
   }, []);
 
   const handleToggleStatus = async (id: string) => {
-    const current = data.find((v) => v.id === id);
+    const current = data.find((v) => v._id === id);
     if (!current) return;
 
     const updatedStatus =
@@ -40,7 +40,7 @@ export default function ManagePastFarmVisitsPage() {
       await axios.patch(`/api/farmvisits/${id}`, { status: updatedStatus });
       setData((prev) =>
         prev.map((item) =>
-          item.id === id ? { ...item, status: updatedStatus } : item
+          item._id === id ? { ...item, status: updatedStatus } : item
         )
       );
     } catch (err) {
@@ -49,7 +49,7 @@ export default function ManagePastFarmVisitsPage() {
   };
 
   const handleToggleFeatured = async (id: string) => {
-    const current = data.find((v) => v.id === id);
+    const current = data.find((v) => v._id === id);
     if (!current) return;
 
     try {
@@ -58,7 +58,7 @@ export default function ManagePastFarmVisitsPage() {
       });
       setData((prev) =>
         prev.map((item) =>
-          item.id === id
+          item._id === id
             ? ({ ...item, featured: !item.featured } as FarmVisits)
             : item
         )
@@ -73,7 +73,7 @@ export default function ManagePastFarmVisitsPage() {
   };
 
   const handleDelete = (id: string) => {
-    setData((prev) => prev.filter((item) => item.id !== id));
+    setData((prev) => prev.filter((item) => item._id !== id));
   };
 
   return (

@@ -3,9 +3,10 @@ import { connectDB } from "@/lib/DB/connectDB";
 import { FarmVisit } from "@/lib/Models/farmvisit";
 import mongoose from "mongoose";
 
-type Params = { params: { key: string } };
-
-export async function GET(req: NextRequest, context: Params) {
+export async function GET(
+  req: NextRequest,
+  context: { params: { key: string } }
+) {
   await connectDB();
 
   const key = context.params.key;
@@ -19,7 +20,10 @@ export async function GET(req: NextRequest, context: Params) {
     : NextResponse.json({ message: "Visit not found" }, { status: 404 });
 }
 
-export async function PATCH(req: NextRequest, context: Params) {
+export async function PATCH(
+  req: NextRequest,
+  context: { params: { key: string } }
+) {
   await connectDB();
 
   const body = await req.json();

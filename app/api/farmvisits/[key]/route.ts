@@ -3,31 +3,29 @@ import { connectDB } from "@/lib/DB/connectDB";
 import { FarmVisit } from "@/lib/Models/farmvisit";
 import mongoose from "mongoose";
 
-interface Context {
-  params: {
-    key: string;
-  };
-}
-
-export async function GET(request: NextRequest, context: Context) {
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: { key: string } }
+) {
   await connectDB();
-  const { key } = context.params;
+  const { key } = params;
 
   const visit = mongoose.Types.ObjectId.isValid(key)
     ? await FarmVisit.findById(key)
     : await FarmVisit.findOne({ slug: key });
 
-  if (!visit) {
-    return NextResponse.json({ message: "Visit not found" }, { status: 404 });
-  }
-
-  return NextResponse.json(visit);
+  return visit
+    ? NextResponse.json(visit)
+    : NextResponse.json({ message: "Visit not found" }, { status: 404 });
 }
 
-export async function PATCH(request: NextRequest, context: Context) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { key: string } }
+) {
   await connectDB();
-  const { key } = context.params;
-  const body = await request.json();
+  const body = await req.json();
+  const { key } = params;
 
   if (!mongoose.Types.ObjectId.isValid(key)) {
     return NextResponse.json({ message: "Invalid ID format" }, { status: 400 });
@@ -36,10 +34,7 @@ export async function PATCH(request: NextRequest, context: Context) {
   const updatedVisit = await FarmVisit.findByIdAndUpdate(key, body, {
     new: true,
   });
-
-  if (!updatedVisit) {
-    return NextResponse.json({ message: "Visit not found" }, { status: 404 });
-  }
-
-  return NextResponse.json(updatedVisit);
+  return updatedVisit
+    ? NextResponse.json(updatedVisit)
+    : NextResponse.json({ message: "Visit not found" }, { status: 404 });
 }

@@ -3,9 +3,12 @@ import { connectDB } from "@/lib/DB/connectDB";
 import { FarmVisit } from "@/lib/Models/farmvisit";
 import mongoose from "mongoose";
 
-export async function GET(_req: NextRequest, context: any) {
+export async function GET(
+  _req: NextRequest,
+  context: { params: { key: string } }
+) {
   await connectDB();
-  const { key } = context.params.key;
+  const key = context.params.key;
 
   const visit = mongoose.Types.ObjectId.isValid(key)
     ? await FarmVisit.findById(key)

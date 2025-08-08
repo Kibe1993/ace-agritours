@@ -5,10 +5,10 @@ import mongoose from "mongoose";
 
 export async function GET(
   _req: NextRequest,
-  context: { params: { key: string } }
+  { params }: { params: { key: string } }
 ) {
   await connectDB();
-  const key = context.params.key;
+  const key = params.key;
 
   const visit = mongoose.Types.ObjectId.isValid(key)
     ? await FarmVisit.findById(key)
@@ -25,7 +25,7 @@ export async function PATCH(
 ) {
   await connectDB();
   const body = await req.json();
-  const { key } = params;
+  const key = params.key;
 
   if (!mongoose.Types.ObjectId.isValid(key)) {
     return NextResponse.json({ message: "Invalid ID format" }, { status: 400 });
@@ -34,6 +34,7 @@ export async function PATCH(
   const updatedVisit = await FarmVisit.findByIdAndUpdate(key, body, {
     new: true,
   });
+
   return updatedVisit
     ? NextResponse.json(updatedVisit)
     : NextResponse.json({ message: "Visit not found" }, { status: 404 });

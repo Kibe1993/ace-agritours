@@ -3,10 +3,14 @@ import mongoose from "mongoose";
 import { connectDB } from "@/lib/DB/connectDB";
 import { FarmVisit } from "@/lib/Models/farmvisit";
 
-export async function GET(
-  req: NextRequest,
-  context: { params: { key: string } }
-) {
+// Type for dynamic route context
+interface RouteContext {
+  params: {
+    key: string;
+  };
+}
+
+export async function GET(req: NextRequest, context: RouteContext) {
   await connectDB();
   const { key } = context.params;
 
@@ -25,10 +29,7 @@ export async function GET(
   return NextResponse.json(visit);
 }
 
-export async function PATCH(
-  req: NextRequest,
-  context: { params: { key: string } }
-) {
+export async function PATCH(req: NextRequest, context: RouteContext) {
   await connectDB();
   const { key } = context.params;
   const body = await req.json();

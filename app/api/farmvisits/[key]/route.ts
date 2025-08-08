@@ -1,26 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
-import mongoose from "mongoose";
 import { connectDB } from "@/lib/DB/connectDB";
 import { FarmVisit } from "@/lib/Models/farmvisit";
+import mongoose from "mongoose";
 
-// Type for dynamic route context
-interface RouteContext {
+type Params = {
   params: {
     key: string;
   };
-}
+};
 
-export async function GET(req: NextRequest, context: RouteContext) {
+export async function GET(_req: NextRequest, { params }: Params) {
   await connectDB();
-  const { key } = context.params;
+  const { key } = params;
 
-  let visit;
-
-  if (mongoose.Types.ObjectId.isValid(key)) {
-    visit = await FarmVisit.findById(key);
-  } else {
-    visit = await FarmVisit.findOne({ slug: key });
-  }
+  const visit = mongoose.Types.ObjectId.isValid(key)
+    ? await FarmVisit.findById(key)
+    : await FarmVisit.findOne({ slug: key });
 
   if (!visit) {
     return NextResponse.json({ message: "Visit not found" }, { status: 404 });
@@ -29,22 +24,22 @@ export async function GET(req: NextRequest, context: RouteContext) {
   return NextResponse.json(visit);
 }
 
-export async function PATCH(req: NextRequest, context: RouteContext) {
+export async function PATCH(req: NextRequest, { params }: Params) {
   await connectDB();
-  const { key } = context.params;
+  const { key } = params;
   const body = await req.json();
 
   if (!mongoose.Types.ObjectId.isValid(key)) {
     return NextResponse.json({ message: "Invalid ID format" }, { status: 400 });
   }
 
-  const visit = await FarmVisit.findByIdAndUpdate(key, body, {
+  const updatedVisit = await FarmVisit.findByIdAndUpdate(key, body, {
     new: true,
   });
 
-  if (!visit) {
+  if (!updatedVisit) {
     return NextResponse.json({ message: "Visit not found" }, { status: 404 });
   }
 
-  return NextResponse.json(visit);
+  return NextResponse.json(updatedVisit);
 }

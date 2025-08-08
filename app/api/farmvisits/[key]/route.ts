@@ -3,12 +3,15 @@ import { connectDB } from "@/lib/DB/connectDB";
 import { FarmVisit } from "@/lib/Models/farmvisit";
 import mongoose from "mongoose";
 
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: { key: string } }
-) {
+interface Context {
+  params: {
+    key: string;
+  };
+}
+
+export async function GET(request: NextRequest, context: Context) {
   await connectDB();
-  const { key } = params;
+  const { key } = context.params;
 
   const visit = mongoose.Types.ObjectId.isValid(key)
     ? await FarmVisit.findById(key)
@@ -21,13 +24,10 @@ export async function GET(
   return NextResponse.json(visit);
 }
 
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { key: string } }
-) {
+export async function PATCH(request: NextRequest, context: Context) {
   await connectDB();
-  const { key } = params;
-  const body = await req.json();
+  const { key } = context.params;
+  const body = await request.json();
 
   if (!mongoose.Types.ObjectId.isValid(key)) {
     return NextResponse.json({ message: "Invalid ID format" }, { status: 400 });

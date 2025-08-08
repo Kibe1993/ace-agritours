@@ -43,15 +43,15 @@ export interface FarmVisits {
   trainer: string;
   highlights: string[];
   availableDays: string[];
-  description?: string;
-  treatmentSummary?: string;
+  description: string;
+  treatmentSummary: string;
   images: {
     url: string;
-    public_id?: string;
+    public_id: string;
   }[];
   email: string;
   phone: string;
-  feedback?: {
+  feedback: {
     name: string;
     comment: string;
     rating: number;

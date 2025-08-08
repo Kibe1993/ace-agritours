@@ -5,11 +5,10 @@ import { FarmVisit } from "@/lib/Models/farmvisit";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { key: string } }
+  context: { params: { key: string } }
 ) {
   await connectDB();
-
-  const { key } = params;
+  const { key } = context.params;
 
   let visit;
 
@@ -27,11 +26,11 @@ export async function GET(
 }
 
 export async function PATCH(
-  req: Request,
-  { params }: { params: { key: string } }
+  req: NextRequest,
+  context: { params: { key: string } }
 ) {
   await connectDB();
-  const { key } = params;
+  const { key } = context.params;
   const body = await req.json();
 
   if (!mongoose.Types.ObjectId.isValid(key)) {

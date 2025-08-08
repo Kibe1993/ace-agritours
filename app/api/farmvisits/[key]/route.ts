@@ -3,15 +3,14 @@ import { connectDB } from "@/lib/DB/connectDB";
 import { FarmVisit } from "@/lib/Models/farmvisit";
 import mongoose from "mongoose";
 
-type Params = {
-  params: {
-    key: string;
-  };
-};
-
-export async function GET(_req: NextRequest, { params }: Params) {
+export async function GET(
+  _req: NextRequest,
+  context: {
+    params: { key: string };
+  }
+) {
   await connectDB();
-  const { key } = params;
+  const { key } = context.params;
 
   const visit = mongoose.Types.ObjectId.isValid(key)
     ? await FarmVisit.findById(key)
@@ -24,9 +23,14 @@ export async function GET(_req: NextRequest, { params }: Params) {
   return NextResponse.json(visit);
 }
 
-export async function PATCH(req: NextRequest, { params }: Params) {
+export async function PATCH(
+  req: NextRequest,
+  context: {
+    params: { key: string };
+  }
+) {
   await connectDB();
-  const { key } = params;
+  const { key } = context.params;
   const body = await req.json();
 
   if (!mongoose.Types.ObjectId.isValid(key)) {

@@ -5,12 +5,10 @@ import mongoose from "mongoose";
 
 export async function GET(
   _req: NextRequest,
-  context: {
-    params: { key: string };
-  }
+  { params }: { params: { key: string } }
 ) {
   await connectDB();
-  const { key } = context.params;
+  const { key } = params;
 
   const visit = mongoose.Types.ObjectId.isValid(key)
     ? await FarmVisit.findById(key)
@@ -25,12 +23,10 @@ export async function GET(
 
 export async function PATCH(
   req: NextRequest,
-  context: {
-    params: { key: string };
-  }
+  { params }: { params: { key: string } }
 ) {
   await connectDB();
-  const { key } = context.params;
+  const { key } = params;
   const body = await req.json();
 
   if (!mongoose.Types.ObjectId.isValid(key)) {

@@ -82,10 +82,6 @@ export default function AddFarmVisitPage() {
             Enter the details of your upcoming farm visit
           </p>
         </div>
-        <div className={styles.actions}>
-          <button className={styles.previewBtn}>Preview</button>
-          <button className={styles.publishBtn}>Save & Publish</button>
-        </div>
       </header>
 
       <main className={styles.main}>
@@ -125,6 +121,7 @@ export default function AddFarmVisitPage() {
             <option value="Horticulture">Horticulture</option>
             <option value="Livestock">Livestock</option>
             <option value="Poultry">Poultry</option>
+            <option value="Bees">Beekeeping</option>
           </select>
           <label htmlFor="guests">Expected Guests</label>
           <input type="number" id="guests" name="guests" required />
@@ -145,7 +142,6 @@ export default function AddFarmVisitPage() {
           />
           <label htmlFor="description">Description</label>
           <LexicalEditor ref={editorRef} onChange={setDescription} />{" "}
-          {/* ✅ Pass ref */}
           <label htmlFor="treatmentSummary">Treatment Summary</label>
           <textarea
             id="treatmentSummary"
@@ -211,14 +207,6 @@ export default function AddFarmVisitPage() {
             {isSubmitting ? "Submitting..." : "Add Farm Visit"}
           </button>
         </form>
-
-        <aside className={styles.sidebar}>
-          <h2>Visit Settings</h2>
-          <div className={styles.statusActions}>
-            <button type="button">Pending</button>
-            <button type="button">Featured</button>
-          </div>
-        </aside>
       </main>
     </section>
   );

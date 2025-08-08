@@ -8,6 +8,7 @@ const imageSchema = new Schema({
 const farmVisitSchema = new Schema(
   {
     title: { type: String, required: true },
+    slug: { type: String, required: true, unique: true },
     location: { type: String, required: true },
     area: { type: String, required: true },
     date: { type: String, required: true },

@@ -3,9 +3,9 @@
   display: flex;
   justify-content: center;
   box-sizing: border-box;
-  height: 100vh;
+  height: 80vh;
   background: linear-gradient(to right, #dde4d7, #acb99a);
-  padding: 30px 20px;
+  padding: 20px;
   padding-bottom: 0;
 }
 

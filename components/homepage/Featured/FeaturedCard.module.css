@@ -76,6 +76,7 @@
 .tags {
   display: flex;
   justify-content: left;
+  flex-direction: column;
   flex-wrap: wrap;
   gap: 8px;
   padding: 0;

@@ -44,9 +44,9 @@ export default function WhyUSGrid() {
           {loading ? (
             <p className={styles.loadingText}>Loading why us content...</p>
           ) : (
-            whyUs.slice(0, 4).map((item) => (
-              <WhyUSItem key={item.title} item={item} />
-            ))
+            whyUs
+              .slice(0, 3)
+              .map((item) => <WhyUSItem key={item.title} item={item} />)
           )}
         </main>
 

@@ -2,19 +2,23 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./FeaturedCard.module.css";
 import { MapPin, Users, ArrowRight, Info } from "lucide-react";
-import { FarmVisit } from "@/app/assets/farmvisit/farmvisitassets";
+import { FarmVisits } from "@/lib/TSInterfaces/typescriptinterface";
 
-export default function FeaturedCard({ item }: { item: FarmVisit }) {
+export default function FeaturedCard({ item }: { item: FarmVisits }) {
   return (
     <div className={styles.card}>
       <header className={styles.header}>
-        <Image
-          src={item.images[0]}
-          alt="farm image"
-          width={400}
-          height={250}
-          className={styles.image}
-        />
+        {item.images?.[0]?.url ? (
+          <Image
+            src={item.images[0].url}
+            alt="farm image"
+            width={400}
+            height={250}
+            className={styles.image}
+          />
+        ) : (
+          <div className={styles.imagePlaceholder}>No image available</div>
+        )}
       </header>
 
       <main className={styles.main}>

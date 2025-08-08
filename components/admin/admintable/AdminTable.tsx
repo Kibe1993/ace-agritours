@@ -2,17 +2,10 @@
 
 import Link from "next/link";
 import styles from "./AdminTable.module.css";
-
-type Item = {
-  id: string;
-  title: string;
-  slug: string;
-  status?: "Pending" | "Approved" | "Completed";
-  featured?: boolean;
-};
+import { FarmVisits } from "@/lib/TSInterfaces/typescriptinterface";
 
 type Props = {
-  data: Item[];
+  data: FarmVisits[];
   basePath: string;
   onToggleStatus?: (id: string) => void;
   onToggleFeatured?: (id: string) => void;

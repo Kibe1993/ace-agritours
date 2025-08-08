@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./OurVisitGrid.module.css";
-import { farmVisits } from "@/app/assets/farmvisit/farmvisitassets";
 import OurVisitCard from "./OurvisitsCard";
 import Link from "next/link";
+import { FarmVisits } from "@/lib/TSInterfaces/typescriptinterface";
+import axios from "axios";
 
 const categories = [
   "All",
@@ -17,11 +18,31 @@ const categories = [
 
 export default function OurVisitsGrid() {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [ourVisits, setOurVisits] = useState<FarmVisits[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchVisits = async () => {
+      try {
+        const res = await axios.get("/api/farmvisits");
+
+        const all = res.data.farmvisits as FarmVisits[];
+        const random = all.sort(() => 0.5 - Math.random()).slice(0, 4);
+        setOurVisits(random);
+      } catch (err) {
+        console.error("Failed to fetch farm visits", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVisits();
+  }, []);
 
   const filteredVisits =
     selectedCategory === "All"
-      ? farmVisits
-      : farmVisits.filter((v) => v.category === selectedCategory);
+      ? ourVisits
+      : ourVisits.filter((v) => v.category === selectedCategory);
 
   return (
     <section className={styles.section} id="ourvisits">
@@ -50,7 +71,7 @@ export default function OurVisitsGrid() {
 
         <div className={styles.grid}>
           {filteredVisits.map((visit) => (
-            <OurVisitCard key={visit.id} item={visit} />
+            <OurVisitCard key={visit.slug} item={visit} />
           ))}
         </div>
 

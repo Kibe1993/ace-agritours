@@ -34,6 +34,7 @@ export async function POST(req: Request) {
       !title ||
       !location ||
       !area ||
+      !slug ||
       !date ||
       !time ||
       !category ||
@@ -94,6 +95,22 @@ export async function POST(req: Request) {
     console.error("Error saving farm visit:", error);
     return NextResponse.json(
       { message: "Failed to save farm visit" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET() {
+  try {
+    await connectDB();
+
+    const farmvisits = await FarmVisit.find().sort({ createdAt: -1 });
+
+    return NextResponse.json({ farmvisits }, { status: 200 });
+  } catch (error) {
+    console.error("Failed to fetch farmvisits", error);
+    return NextResponse.json(
+      { message: "Error fetching farmvisits" },
       { status: 500 }
     );
   }

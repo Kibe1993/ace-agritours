@@ -4,16 +4,35 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import styles from "./page.module.css";
-import { farmVisits, FarmVisit } from "@/app/assets/farmvisit/farmvisitassets";
 import placeholder from "@/public/avatar.png";
+import { FarmVisits } from "@/lib/TSInterfaces/typescriptinterface";
+import axios from "axios";
 
 export default function VisitDetails() {
-  const params = useParams();
-  const slug = params?.slug;
-  const visit = farmVisits.find((item: FarmVisit) => item.slug === slug);
+  const { key } = useParams();
+  const [visit, setVisit] = useState<FarmVisits | null>(null);
+  const [loading, setLoading] = useState(true);
   const [current, setCurrent] = useState(0);
   const [modalIdx, setModalIdx] = useState<number | null>(null);
   const [visibleCount, setVisibleCount] = useState(3);
+
+  useEffect(() => {
+    const fetchVisit = async () => {
+      try {
+        const res = await axios.get(`/api/farmvisits/${key}`);
+
+        setVisit(res.data);
+      } catch (err) {
+        console.error("Failed to fetch visit", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (key) {
+      fetchVisit();
+    }
+  }, [key]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -24,15 +43,23 @@ export default function VisitDetails() {
       } else {
         setVisibleCount(3);
       }
-
       setCurrent(0);
     };
 
-    // Set initial value
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  if (loading) {
+    return (
+      <section className={styles.section}>
+        <div className={styles.container}>
+          <h2 className={styles.sectionHeading}>Loading...</h2>
+        </div>
+      </section>
+    );
+  }
 
   if (!visit) {
     return (
@@ -47,12 +74,10 @@ export default function VisitDetails() {
   const totalImages = visit.images.length;
   const maxSteps = Math.max(0, totalImages - visibleCount);
   const showNavigation = totalImages > visibleCount;
+  const visibleImages = visit.images.slice(current, current + visibleCount);
 
   const handleNext = () => setCurrent((prev) => Math.min(prev + 1, maxSteps));
   const handlePrev = () => setCurrent((prev) => Math.max(prev - 1, 0));
-
-  // Get current visible images
-  const visibleImages = visit.images.slice(current, current + visibleCount);
 
   return (
     <section className={styles.section}>
@@ -70,7 +95,7 @@ export default function VisitDetails() {
             {visibleImages.map((src, idx) => (
               <div key={current + idx} className={styles.carouselImageWrapper}>
                 <Image
-                  src={src}
+                  src={src.url}
                   alt={`${visit.title} image ${current + idx + 1}`}
                   width={350}
                   height={250}
@@ -87,7 +112,6 @@ export default function VisitDetails() {
                 className={styles.navButton}
                 onClick={handlePrev}
                 disabled={current === 0}
-                aria-label="Previous images"
               >
                 ← Previous
               </button>
@@ -99,7 +123,6 @@ export default function VisitDetails() {
                 className={styles.navButton}
                 onClick={handleNext}
                 disabled={current >= maxSteps}
-                aria-label="Next images"
               >
                 Next →
               </button>
@@ -117,7 +140,7 @@ export default function VisitDetails() {
               onClick={(e) => e.stopPropagation()}
             >
               <Image
-                src={visit.images[modalIdx]}
+                src={visit.images[modalIdx].url}
                 alt={`Full size image ${modalIdx + 1}`}
                 width={800}
                 height={600}
@@ -126,7 +149,6 @@ export default function VisitDetails() {
               <button
                 className={styles.closeBtn}
                 onClick={() => setModalIdx(null)}
-                aria-label="Close modal"
               >
                 ✕
               </button>
@@ -136,18 +158,16 @@ export default function VisitDetails() {
 
         <div className={styles.description}>
           <h2 className={styles.sectionHeading}>About the Visit</h2>
-
           <div
             className={styles.description}
             dangerouslySetInnerHTML={{ __html: visit.description }}
-          ></div>
+          />
         </div>
 
         <div className={styles.infoSection}>
           <h2 className={styles.sectionHeading}>Visit Summary</h2>
           <div className={styles.cardWrapper}>
             {/* Trainer Card */}
-
             <div className={`${styles.card} ${styles.trainerCard}`}>
               <div className={styles.trainerHeader}>
                 <Image
@@ -195,27 +215,24 @@ export default function VisitDetails() {
         <div className={styles.contactInfo}>
           <h2 className={styles.sectionHeading}>Contact Info</h2>
           <p>
-            📧 <strong>Email:</strong> {visit.contactInfo.email}
+            📧 <strong>Email:</strong> {visit.email}
             <br />
-            📞 <strong>Phone:</strong> {visit.contactInfo.phone}
+            📞 <strong>Phone:</strong> {visit.phone}
           </p>
-        </div>
-
-        {visit.feedback.length > 0 && (
-          <div className={styles.feedbackSection}>
-            <h2 className={styles.sectionHeading}>Visitor Feedback</h2>
-            <ul className={styles.feedbackList}>
-              {visit.feedback.map((fb, idx) => (
-                <li key={idx} className={styles.feedbackItem}>
-                  <p>
-                    <strong>{fb.name}:</strong> {fb.comment}
-                  </p>
-                  <p>⭐ {fb.rating}</p>
-                </li>
+          <br />
+          <div className={styles.daysContainer}>
+            <h3 className={styles.daysHeading}>
+              Days Available For Farm Visit
+            </h3>
+            <div className={styles.badgesWrapper}>
+              {visit.availableDays.map((day, index) => (
+                <span key={index} className={styles.dayBadge}>
+                  {day}
+                </span>
               ))}
-            </ul>
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </section>
   );

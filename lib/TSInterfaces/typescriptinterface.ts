@@ -31,7 +31,7 @@ export interface Partner {
 }
 
 export interface FarmVisits {
-  id: string;
+  _id: string;
   slug: string;
   title: string;
   location: string;
@@ -42,16 +42,20 @@ export interface FarmVisits {
   guests: number;
   trainer: string;
   highlights: string[];
-  description: string;
-  treatmentSummary: string;
-  images: string[];
-  contactInfo: {
-    email: string;
-    phone: string;
-  };
-  feedback: {
+  availableDays: string[];
+  description?: string;
+  treatmentSummary?: string;
+  images: {
+    url: string;
+    public_id?: string;
+  }[];
+  email: string;
+  phone: string;
+  feedback?: {
     name: string;
     comment: string;
     rating: number;
   }[];
+  status: string;
+  featured: boolean;
 }

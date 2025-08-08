@@ -1,15 +1,15 @@
-import { FarmVisit } from "@/app/assets/farmvisit/farmvisitassets";
 import styles from "./OurvisitsCard.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import { MapPin } from "lucide-react";
+import { FarmVisits } from "@/lib/TSInterfaces/typescriptinterface";
 
-export default function OurVisitCard({ item }: { item: FarmVisit }) {
+export default function OurVisitCard({ item }: { item: FarmVisits }) {
   return (
     <div className={styles.card}>
       <div className={styles.imageWrapper}>
         <Image
-          src={item.images[0]}
+          src={item.images[0].url}
           alt={item.title}
           fill
           className={styles.image}

@@ -30,7 +30,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/api/farmvisits/[key]/route.js"
+    "app/api/farmvisits/[key]/route.ts"
   ],
   "exclude": ["node_modules"]
 }

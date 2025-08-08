@@ -35,7 +35,7 @@ export default function AdminTable({
       </thead>
       <tbody>
         {data.map((item, index) => (
-          <tr key={item.id}>
+          <tr key={item._id}>
             <td>{index + 1}</td>
             <td>
               <Link href={`/${basePath}/${item.slug}`} className={styles.link}>
@@ -45,7 +45,7 @@ export default function AdminTable({
             <td>
               <button
                 className={styles.toggle}
-                onClick={() => onToggleStatus?.(item.id)}
+                onClick={() => onToggleStatus?.(item._id)}
               >
                 {item.status === "Approved"
                   ? "Approved ✅"
@@ -58,7 +58,7 @@ export default function AdminTable({
               <td>
                 <button
                   className={styles.toggle}
-                  onClick={() => onToggleFeatured(item.id)}
+                  onClick={() => onToggleFeatured(item._id)}
                 >
                   {item.featured ? "Yes" : "No"}
                 </button>
@@ -66,11 +66,14 @@ export default function AdminTable({
             )}
 
             <td>
-              <button onClick={() => onEdit?.(item.id)} className={styles.edit}>
+              <button
+                onClick={() => onEdit?.(item._id)}
+                className={styles.edit}
+              >
                 Edit
               </button>
               <button
-                onClick={() => onDelete?.(item.id)}
+                onClick={() => onDelete?.(item._id)}
                 className={styles.delete}
               >
                 Delete

@@ -1,15 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/DB/connectDB";
 import { FarmVisit } from "@/lib/Models/farmvisit";
 import mongoose from "mongoose";
 
-type RouteContext = {
-  params: {
-    key: string;
-  };
-};
-
-export async function GET(_req: NextRequest, context: RouteContext) {
+export async function GET(_req, context) {
   await connectDB();
   const key = context.params.key;
 
@@ -22,10 +16,10 @@ export async function GET(_req: NextRequest, context: RouteContext) {
     : NextResponse.json({ message: "Visit not found" }, { status: 404 });
 }
 
-export async function PATCH(req: NextRequest, context: RouteContext) {
+export async function PATCH(req, context) {
   await connectDB();
-  const body = await req.json();
   const key = context.params.key;
+  const body = await req.json();
 
   if (!mongoose.Types.ObjectId.isValid(key)) {
     return NextResponse.json({ message: "Invalid ID format" }, { status: 400 });

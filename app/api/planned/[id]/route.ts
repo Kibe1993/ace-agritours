@@ -3,11 +3,10 @@ import { PlannedVisit } from "@/lib/Models/planned";
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 
-export async function GET(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
-  const { id } = context.params;
+export async function GET(req: NextRequest, context: unknown) {
+  const { params } = context as { params: { id: string } };
+
+  const id = params.id;
 
   await connectDB();
 

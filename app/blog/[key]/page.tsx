@@ -1,15 +1,46 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { blogData } from "@/app/assets/farmvisit/BlogAssets";
-import { Blog } from "@/app/assets/farmvisit/BlogAssets";
+
 import Image from "next/image";
 import styles from "./page.module.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Blog } from "@/lib/TSInterfaces/typescriptinterface";
 
 export default function BlogDetails() {
   const params = useParams();
-  const slug = params?.slug;
-  const blog = blogData.find((item: Blog) => item.slug === slug);
+  const key = params?.key;
+
+  const [blog, setBlog] = useState<Blog | null>(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchVisit = async () => {
+      try {
+        const res = await axios.get(`/api/blogs/${key}`);
+
+        setBlog(res.data);
+      } catch (err) {
+        console.error("Failed to fetch visit", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (key) {
+      fetchVisit();
+    }
+  }, [key]);
+
+  if (loading) {
+    return (
+      <section className={styles.section}>
+        <div className={styles.container}>
+          <p>Loading Blog...</p>
+        </div>
+      </section>
+    );
+  }
 
   if (!blog) {
     return (
@@ -34,7 +65,7 @@ export default function BlogDetails() {
         <main className={styles.main}>
           <div className={styles.imageWrapper}>
             <Image
-              src={blog.image}
+              src={blog.image.url}
               alt={blog.title}
               fill
               className={styles.image}

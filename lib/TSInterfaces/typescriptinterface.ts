@@ -59,3 +59,43 @@ export interface FarmVisits {
   status: string;
   featured: boolean;
 }
+
+type BlogCategory =
+  | "Livestock"
+  | "Aquaculture"
+  | "Poultry"
+  | "Beekeeping"
+  | "Horticulture";
+
+export interface Blog {
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
+  category: BlogCategory;
+  date: string;
+  image: {
+    url: string;
+    public_id: string;
+  };
+  author: string;
+  status: string;
+  featured: boolean;
+  createdAt: string;
+}
+export interface PlannedVisit {
+  _id: string;
+  title: string;
+  slug: string;
+  status: "Planned" | "Confirmed" | "Cancelled";
+  location: string;
+  category: "Livestock" | "Poultry" | "Aquaculture" | "Horticulture";
+  date: string;
+  time: string;
+  guests: number;
+  image: {
+    url: string;
+    public_id: string;
+  };
+  featured: boolean;
+}

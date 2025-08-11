@@ -1,28 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./BlogCard.module.css";
-import { Blog } from "@/app/assets/farmvisit/BlogAssets";
+import { Blog } from "@/lib/TSInterfaces/typescriptinterface";
 
 type BlogCardProps = {
   blog: Blog;
 };
 
 export default function BlogCard({ blog }: BlogCardProps) {
-  const truncateTitle = (text: string, wordLimit: number) => {
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
-  };
-
   return (
     <div className={styles.card}>
       <div className={styles.imageWrapper}>
         <Image
-          src={blog.image}
+          src={blog.image.url}
           alt={blog.title}
           className={styles.image}
-          placeholder="blur"
+          fill
         />
       </div>
       <div className={styles.content}>

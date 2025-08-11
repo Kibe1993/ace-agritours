@@ -1,11 +1,44 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import styles from "./PlannedVisits.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Clock, Users, Tag, Sprout } from "lucide-react";
-import { upcomingVisits } from "@/app/assets/farmvisit/farmvisitassets";
+import { PlannedVisit } from "@/lib/TSInterfaces/typescriptinterface";
+import axios from "axios";
 
 export default function PlannedVisits() {
+  const [data, setData] = useState<PlannedVisit[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPlannedVisits = async () => {
+      try {
+        const res = await axios.get("/api/planned");
+        const all = res.data.plannedVisits as PlannedVisit[];
+        const sortedByNewest = all.sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+        const newestThree = sortedByNewest.slice(0, 3);
+        setData(newestThree);
+      } catch (err) {
+        console.error("Failed to fetch planned farm visits", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPlannedVisits();
+  }, []);
+
+  if (loading) {
+    <p>Loading Planned Visits</p>;
+  }
+  if (!data) {
+    <p>Error fetching planned farm visits</p>;
+  }
+
   return (
     <section id="plannedvisits" className={styles.section}>
       <div className={styles.container}>
@@ -15,11 +48,11 @@ export default function PlannedVisits() {
         </p>
 
         <div className={styles.cards}>
-          {upcomingVisits.map((visit) => (
-            <div key={visit.id} className={styles.card}>
+          {data.map((visit) => (
+            <div key={visit._id} className={styles.card}>
               <div className={styles.imageWrapper}>
                 <Image
-                  src={visit.image}
+                  src={visit.image.url}
                   alt={visit.title}
                   fill
                   className={styles.image}
@@ -58,7 +91,7 @@ export default function PlannedVisits() {
 
                 <div className={styles.cardFooter}>
                   <Link
-                    href={`/farmvisit/${visit.slug}/booking/${visit.id}`}
+                    href={`/farmvisit/${visit.slug}/booking/${visit._id}`}
                     className={styles.bookNow}
                   >
                     Book Now

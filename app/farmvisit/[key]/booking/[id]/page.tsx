@@ -1,16 +1,84 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { upcomingVisits } from "@/app/assets/farmvisit/farmvisitassets";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import styles from "./page.module.css";
+import { PlannedVisit } from "@/lib/TSInterfaces/typescriptinterface";
+import { toast } from "react-toastify";
 
 export default function BookingPage() {
   const { id } = useParams();
-  const visit = upcomingVisits.find((v) => v.id === id);
+  const [visit, setVisit] = useState<PlannedVisit | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [bookingLoading, setBookingLoading] = useState(false);
 
-  if (!visit) {
-    return <div>Visit not found.</div>;
-  }
+  // Controlled form values state
+  const [formValues, setFormValues] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    guests: 1,
+  });
+
+  useEffect(() => {
+    if (!id) return;
+    const fetchVisit = async () => {
+      setLoading(true);
+      try {
+        const res = await axios.get(`/api/planned/${id}`);
+        setVisit(res.data);
+        // Initialize guests to visit.guests if available
+        setFormValues((vals) => ({
+          ...vals,
+          guests: res.data.guests || 1,
+        }));
+      } catch (error) {
+        console.error("Failed to fetch visit", error);
+        setVisit(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchVisit();
+  }, [id]);
+
+  if (loading) return <p>Loading visit details...</p>;
+  if (!visit) return <p>Visit not found.</p>;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormValues((vals) => ({
+      ...vals,
+      [name]: name === "guests" ? Number(value) : value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setBookingLoading(true);
+
+    const data = {
+      ...formValues,
+      visitId: visit._id,
+    };
+
+    try {
+      const res = await axios.post("/api/bookings", data);
+      toast.success("Booking Successful");
+
+      setFormValues({
+        name: "",
+        phone: "",
+        email: "",
+        guests: 0,
+      });
+    } catch (error: any) {
+      toast.error("Booking Failed");
+    } finally {
+      setBookingLoading(false);
+    }
+  };
 
   return (
     <section className={styles.section}>
@@ -44,8 +112,8 @@ export default function BookingPage() {
           </div>
         </div>
 
-        <form className={styles.form}>
-          <input type="hidden" name="visitId" value={visit.id} />
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <input type="hidden" name="visitId" value={visit._id} />
 
           <div className={styles.inputGroup}>
             <label className={styles.label} htmlFor="name">
@@ -58,6 +126,8 @@ export default function BookingPage() {
               placeholder="Your Name"
               className={styles.input}
               required
+              value={formValues.name}
+              onChange={handleChange}
             />
           </div>
 
@@ -72,6 +142,8 @@ export default function BookingPage() {
               placeholder="e.g. +254712345678"
               className={styles.input}
               required
+              value={formValues.phone}
+              onChange={handleChange}
             />
           </div>
 
@@ -86,6 +158,8 @@ export default function BookingPage() {
               placeholder="you@example.com"
               className={styles.input}
               required
+              value={formValues.email}
+              onChange={handleChange}
             />
           </div>
 
@@ -98,13 +172,19 @@ export default function BookingPage() {
               name="guests"
               type="number"
               className={styles.input}
-              defaultValue={visit.guests}
               required
+              min={1}
+              value={formValues.guests}
+              onChange={handleChange}
             />
           </div>
 
-          <button type="submit" className={styles.button}>
-            Confirm Booking
+          <button
+            type="submit"
+            className={styles.button}
+            disabled={bookingLoading}
+          >
+            {bookingLoading ? "Booking..." : "Confirm Booking"}
           </button>
         </form>
       </div>

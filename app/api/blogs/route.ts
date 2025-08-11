@@ -3,6 +3,7 @@ import { Blog } from "@/lib/Models/blog";
 import { uploadImageToCloudinary } from "@/lib/cloudinary/uploadImage";
 
 import { NextResponse } from "next/server";
+import slugify from "slugify";
 
 export async function POST(req: Request) {
   try {
@@ -16,8 +17,11 @@ export async function POST(req: Request) {
     const date = formData.get("date") as string;
     const author = formData.get("author") as string;
     const imageFile = formData.get("image") as File;
+    const slug = slugify(title, { lower: true, strict: true });
 
-    if (!title || !description || !category || !author || !imageFile) {
+    console.log("The slug is", slug);
+
+    if (!title || !slug || !description || !category || !author || !imageFile) {
       return NextResponse.json(
         { message: "Missing required fields" },
         { status: 400 }
@@ -35,6 +39,7 @@ export async function POST(req: Request) {
 
     const blog = new Blog({
       title,
+      slug,
       description,
       category,
       date,
@@ -54,6 +59,21 @@ export async function POST(req: Request) {
     console.error("Error saving blog:", error);
     return NextResponse.json(
       { message: "Failed to save blog" },
+      { status: 500 }
+    );
+  }
+}
+export async function GET() {
+  try {
+    await connectDB();
+
+    const blogs = await Blog.find().sort({ createdAt: -1 });
+
+    return NextResponse.json({ blogs }, { status: 200 });
+  } catch (error) {
+    console.error("Failed to fetch blogs", error);
+    return NextResponse.json(
+      { message: "Error fetching blogs" },
       { status: 500 }
     );
   }

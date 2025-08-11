@@ -77,14 +77,9 @@
   color: white;
 }
 
-.pending {
+.planned {
   background-color: #fa7c15;
   color: #fff;
-}
-
-.completed {
-  background-color: #64748b;
-  color: white;
 }
 
 .cardContent {

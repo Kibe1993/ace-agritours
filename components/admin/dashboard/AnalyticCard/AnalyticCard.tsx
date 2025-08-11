@@ -42,7 +42,7 @@ export default function AnalyticCard({
             trend === "up" ? styles.up : styles.down
           }`}
         >
-          {percentage}
+          {percentage}%
         </span>
       </p>
     </div>

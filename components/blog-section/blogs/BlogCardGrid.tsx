@@ -1,7 +1,7 @@
-import { Blog } from "@/app/assets/farmvisit/BlogAssets";
 import styles from "./BlogCardGrid.module.css";
 import { useEffect, useState } from "react";
 import BlogCard from "./BlogCard";
+import { Blog } from "@/lib/TSInterfaces/typescriptinterface";
 
 interface BlogCardGridProps {
   blogs: Blog[];
@@ -18,7 +18,7 @@ export default function BlogCardGrid({ blogs }: BlogCardGridProps) {
   }, [blogs]);
 
   const handleShowMore = () => {
-    setVisibleBlogs(blogs); // show all
+    setVisibleBlogs(blogs);
     setHasMore(false);
   };
 
@@ -28,7 +28,7 @@ export default function BlogCardGrid({ blogs }: BlogCardGridProps) {
         <h2 className={styles.heading}>View Blogs Here</h2>
         <div className={styles.grid}>
           {visibleBlogs.map((blog) => (
-            <BlogCard key={blog.id} blog={blog} />
+            <BlogCard key={blog._id} blog={blog} />
           ))}
         </div>
         {hasMore && (

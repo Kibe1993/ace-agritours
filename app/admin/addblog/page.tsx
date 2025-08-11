@@ -2,7 +2,9 @@
 
 import { useRef, useState } from "react";
 import axios from "axios";
-import LexicalEditor from "@/components/editor/LexicalEditor";
+import LexicalEditor, {
+  LexicalEditorHandle,
+} from "@/components/editor/LexicalEditor";
 import styles from "./page.module.css";
 import { toast } from "react-toastify";
 
@@ -11,6 +13,7 @@ export default function AddBlogPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const editorRef = useRef<LexicalEditorHandle | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -55,6 +58,7 @@ export default function AddBlogPage() {
       form.reset();
       setDescription("");
       handleRemoveImage();
+      editorRef.current?.clearEditor?.();
     } catch (err: unknown) {
       let message = "Failed to submit blog post";
 
@@ -64,6 +68,8 @@ export default function AddBlogPage() {
 
       console.error("Submission error:", err);
       toast.error(message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -76,15 +82,6 @@ export default function AddBlogPage() {
             <p className={styles.subtitle}>
               Create and publish a new blog post for your farm tours
             </p>
-          </div>
-
-          <div className={styles.actions}>
-            <button type="button" className={styles.previewBtn}>
-              Preview
-            </button>
-            <button type="button" className={styles.publishBtn}>
-              Save & Publish
-            </button>
           </div>
         </header>
 
@@ -100,14 +97,16 @@ export default function AddBlogPage() {
             />
 
             <label htmlFor="description">Description</label>
-            <LexicalEditor onChange={setDescription} />
+            <LexicalEditor ref={editorRef} onChange={setDescription} />
 
             <label htmlFor="category">Category</label>
             <select id="category" name="category" required>
               <option value="">Select Category</option>
               <option value="Livestock">Livestock</option>
-              <option value="Crops">Crops</option>
+              <option value="Beekeeping">Beekeeping</option>
               <option value="Poultry">Poultry</option>
+              <option value="Aquaculture">Acquaculture</option>
+              <option value="Horticulture">Holticulture</option>
             </select>
 
             <label htmlFor="date">Date</label>
@@ -170,30 +169,6 @@ export default function AddBlogPage() {
               {isSubmitting ? "Submitting..." : "Add Blog"}
             </button>
           </form>
-
-          <aside className={styles.sidebar}>
-            <h2>Publish Settings</h2>
-
-            <div className={styles.statusActions}>
-              <button type="button">Pending</button>
-              <button type="button">Featured</button>
-              <button type="button">Edit</button>
-              <button type="button">Delete</button>
-            </div>
-
-            <div className={styles.statusInfo}>
-              <h3>Post Status</h3>
-              <p>
-                Status: <span>Draft</span>
-              </p>
-              <p>
-                Featured: <span>No</span>
-              </p>
-              <p>
-                Created: <span>08/01/2025</span>
-              </p>
-            </div>
-          </aside>
         </main>
       </div>
     </section>

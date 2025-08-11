@@ -1,26 +1,54 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import styles from "./BlogPage.module.css";
-import { Blog, blogData } from "../assets/farmvisit/BlogAssets";
+
 import BlogHero from "@/components/blog-section/BlogHero";
 import BlogCardGrid from "@/components/blog-section/blogs/BlogCardGrid";
 import BlogSubscription from "@/components/blog-section/subscribe/BlogSubscription";
+import { Blog } from "@/lib/TSInterfaces/typescriptinterface";
+import axios from "axios";
+
+const categories = [
+  "All",
+  "Livestock",
+  "Poultry",
+  "Beekeeping",
+  "Aquaculture",
+  "Horticulture",
+];
 
 export default function BlogPage() {
   const [activeCategory, setActiveCategory] = useState("All");
-  const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>([]);
-
-  const categories = ["All", ...new Set(blogData.map((blog) => blog.category))];
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const shuffled = [...blogData].sort(() => 0.5 - Math.random());
-    const filtered =
-      activeCategory === "All"
-        ? shuffled
-        : shuffled.filter((blog) => blog.category === activeCategory);
+    const fetchBlogs = async () => {
+      try {
+        const res = await axios.get("/api/blogs");
+        const allBlogs = res.data.blogs as Blog[];
+        setBlogs(allBlogs);
+      } catch (err) {
+        console.error("Failed to fetch blogs", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    setFilteredBlogs(filtered);
-  }, [activeCategory]);
+    fetchBlogs();
+  }, []);
+
+  const filteredBlogs = useMemo(() => {
+    return blogs.filter(
+      (blog) =>
+        blog.status === "Approved" &&
+        (activeCategory === "All" || blog.category === activeCategory)
+    );
+  }, [activeCategory, blogs]);
+
+  if (loading) {
+    return <p>Loading blogs...</p>;
+  }
 
   return (
     <section className={styles.pageWrapper}>
@@ -30,7 +58,6 @@ export default function BlogPage() {
         setActiveCategory={setActiveCategory}
       />
       <BlogCardGrid blogs={filteredBlogs} />
-
       <BlogSubscription />
     </section>
   );

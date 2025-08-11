@@ -3,6 +3,7 @@ import { PlannedVisit } from "@/lib/Models/planned";
 
 import { uploadImageToCloudinary } from "@/lib/cloudinary/uploadImage";
 import { NextResponse } from "next/server";
+import slugify from "slugify";
 
 export async function POST(req: Request) {
   try {
@@ -19,8 +20,13 @@ export async function POST(req: Request) {
     const guests = formData.get("guests") as string;
     const imageFile = formData.get("image") as File;
 
+    const slug = slugify(title, { lower: true, strict: true });
+
+    console.log("Slug is", slug);
+
     if (
       !title ||
+      !slug ||
       !status ||
       !location ||
       !category ||
@@ -44,6 +50,7 @@ export async function POST(req: Request) {
 
     const plannedVisit = new PlannedVisit({
       title,
+      slug,
       status,
       location,
       category,
@@ -63,6 +70,21 @@ export async function POST(req: Request) {
     console.error("Error saving planned visit:", error);
     return NextResponse.json(
       { message: "Failed to save planned visit" },
+      { status: 500 }
+    );
+  }
+}
+export async function GET() {
+  try {
+    await connectDB();
+
+    const plannedVisits = await PlannedVisit.find().sort({ createdAt: -1 });
+
+    return NextResponse.json({ plannedVisits }, { status: 200 });
+  } catch (error) {
+    console.error("Failed to fetch planned visits", error);
+    return NextResponse.json(
+      { message: "Error fetching planned visits" },
       { status: 500 }
     );
   }

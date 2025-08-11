@@ -2,10 +2,17 @@
 
 import Link from "next/link";
 import styles from "./AdminTable.module.css";
-import { FarmVisits } from "@/lib/TSInterfaces/typescriptinterface";
 
-type Props = {
-  data: FarmVisits[];
+interface BaseItem {
+  _id: string;
+  slug: string;
+  title: string;
+  status: string;
+  featured: boolean;
+}
+
+type Props<T extends BaseItem> = {
+  data: T[];
   basePath: string;
   onToggleStatus?: (id: string) => void;
   onToggleFeatured?: (id: string) => void;
@@ -13,14 +20,14 @@ type Props = {
   onDelete?: (id: string) => void;
 };
 
-export default function AdminTable({
+export default function AdminTable<T extends BaseItem>({
   data,
   basePath,
   onToggleStatus,
   onToggleFeatured,
   onEdit,
   onDelete,
-}: Props) {
+}: Props<T>) {
   return (
     <table className={styles.table}>
       <thead>
@@ -29,7 +36,6 @@ export default function AdminTable({
           <th>Title</th>
           <th>Status</th>
           {onToggleFeatured && <th>Featured</th>}
-
           <th>Actions</th>
         </tr>
       </thead>
@@ -51,6 +57,8 @@ export default function AdminTable({
                   ? "Approved ✅"
                   : item.status === "Completed"
                   ? "Completed ✅"
+                  : item.status === "Confirmed"
+                  ? "Confirmed"
                   : "Pending ⏳"}
               </button>
             </td>
@@ -64,7 +72,6 @@ export default function AdminTable({
                 </button>
               </td>
             )}
-
             <td>
               <button
                 onClick={() => onEdit?.(item._id)}

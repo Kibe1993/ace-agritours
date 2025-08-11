@@ -75,7 +75,6 @@ export default function AddPlannedVisitPage() {
             <option value="">Select status</option>
             <option value="Planned">Planned</option>
             <option value="Confirmed">Confirmed</option>
-            <option value="Cancelled">Cancelled</option>
           </select>
 
           <label htmlFor="location">Location</label>

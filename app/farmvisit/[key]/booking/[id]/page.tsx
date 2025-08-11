@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import styles from "./page.module.css";
 import { PlannedVisit } from "@/lib/TSInterfaces/typescriptinterface";
 import { toast } from "react-toastify";
@@ -13,7 +13,6 @@ export default function BookingPage() {
   const [loading, setLoading] = useState(true);
   const [bookingLoading, setBookingLoading] = useState(false);
 
-  // Controlled form values state
   const [formValues, setFormValues] = useState({
     name: "",
     phone: "",
@@ -28,7 +27,6 @@ export default function BookingPage() {
       try {
         const res = await axios.get(`/api/planned/${id}`);
         setVisit(res.data);
-        // Initialize guests to visit.guests if available
         setFormValues((vals) => ({
           ...vals,
           guests: res.data.guests || 1,
@@ -71,9 +69,10 @@ export default function BookingPage() {
         name: "",
         phone: "",
         email: "",
-        guests: 0,
+        guests: 1,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as AxiosError;
       toast.error("Booking Failed");
     } finally {
       setBookingLoading(false);

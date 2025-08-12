@@ -1,5 +1,15 @@
 import mongoose, { Connection } from "mongoose";
 
+// ✅ Import models so they get registered every time DB connects
+import "@/lib/Models/planned";
+import "@/lib/Models/bookings";
+import "@/lib/Models/blog";
+import "@/lib/Models/farmvisit";
+import "@/lib/Models/Newsletter";
+import "@/lib/Models/partner";
+import "@/lib/Models/testimonials";
+import "@/lib/Models/WhyUs";
+
 const MONGODB_URI = process.env.MONGODB_URI as string;
 
 if (!MONGODB_URI) {

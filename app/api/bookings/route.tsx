@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { connectDB } from "@/lib/DB/connectDB";
 import { Booking } from "@/lib/Models/bookings";
 import { NextRequest, NextResponse } from "next/server";
+import { PlannedVisit } from "@/lib/Models/planned";
 
 export async function POST(req: NextRequest) {
   try {

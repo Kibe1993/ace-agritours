@@ -5,6 +5,10 @@ export const plannedVisitFields = {
   guests: { type: Number, required: true },
   time: { type: String, required: true },
   location: { type: String, required: true },
+  image: {
+    url: { type: String, required: true },
+    public_id: { type: String, required: true },
+  },
 };
 
 const plannedVisitSchema = new mongoose.Schema(
@@ -15,11 +19,6 @@ const plannedVisitSchema = new mongoose.Schema(
     date: { type: String, required: true },
 
     ...plannedVisitFields,
-
-    image: {
-      url: { type: String, required: true },
-      public_id: { type: String, required: true },
-    },
   },
   { timestamps: true }
 );

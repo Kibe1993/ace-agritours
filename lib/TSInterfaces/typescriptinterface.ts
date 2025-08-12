@@ -102,11 +102,12 @@ export interface PlannedVisit {
 
 export interface Booking {
   _id: string;
+  clerkId: string;
   name: string;
   phone: number;
   email: string;
   status: "Unpaid" | "Paid";
-  plannedVisitId: string | PlannedVisit;
-  createdAt?: string;
-  updatedAt?: string;
+  plannedVisitId: PlannedVisit;
+  createdAt: string;
+  updatedAt: string;
 }

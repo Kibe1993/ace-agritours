@@ -4,10 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import LogoImg from "@/public/ace.png";
 import styles from "./AdminNavbar.module.css";
+import { SignOutButton } from "@clerk/nextjs";
 
 export default function AdminNavbar() {
-  const links = [{ href: "/", label: "Logout" }];
-
   return (
     <section className={styles.section}>
       <nav className={styles.nav}>
@@ -18,13 +17,11 @@ export default function AdminNavbar() {
         </div>
 
         <ul className={styles.navLinks}>
-          {links.map((link, index) => (
-            <li key={index} className={styles.navItem}>
-              <Link href={link.href} className={styles.navLink}>
-                {link.label}
-              </Link>
-            </li>
-          ))}
+          <li className={styles.navItem}>
+            <SignOutButton redirectUrl="/">
+              <button className={styles.navLink}>Logout</button>
+            </SignOutButton>
+          </li>
         </ul>
       </nav>
     </section>

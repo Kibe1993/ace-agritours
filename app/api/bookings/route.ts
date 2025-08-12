@@ -6,9 +6,11 @@ import { PlannedVisit } from "@/lib/Models/planned";
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, phone, email, visitId, guests } = await req.json();
+    const { name, phone, email, plannedVisitId, guests, clerkId } =
+      await req.json();
 
-    if (!name || !phone || !email || !visitId || !guests) {
+    // Validate required fields
+    if (!name || !phone || !email || !plannedVisitId || !guests || !clerkId) {
       return NextResponse.json(
         { error: "All fields are required" },
         { status: 400 }
@@ -19,12 +21,12 @@ export async function POST(req: NextRequest) {
 
     const normalizedEmail = email.toLowerCase();
 
-    const isValid = mongoose.Types.ObjectId.isValid(visitId);
-    if (!isValid) {
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(plannedVisitId)) {
       return NextResponse.json({ error: "Invalid visit ID" }, { status: 400 });
     }
 
-    const objectVisitId = new mongoose.Types.ObjectId(visitId);
+    const objectVisitId = new mongoose.Types.ObjectId(plannedVisitId);
 
     const existingBooking = await Booking.findOne({
       email: normalizedEmail,
@@ -38,12 +40,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Create new booking
     const newBooking = new Booking({
       name,
       phone,
       email: normalizedEmail,
       plannedVisitId: objectVisitId,
       guests,
+      clerkId,
       status: "Unpaid",
     });
 
@@ -67,7 +71,7 @@ export async function GET() {
 
     const bookings = await Booking.find()
       .sort({ createdAt: -1 })
-      .populate("plannedVisitId", "title");
+      .populate("plannedVisitId");
 
     return NextResponse.json({ bookings }, { status: 200 });
   } catch (error) {

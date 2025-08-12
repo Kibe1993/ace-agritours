@@ -1,18 +1,21 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useUser, useClerk } from "@clerk/nextjs";
+import { useParams, usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import styles from "./page.module.css";
-import { PlannedVisit } from "@/lib/TSInterfaces/typescriptinterface";
 import { toast } from "react-toastify";
+import { PlannedVisit } from "@/lib/TSInterfaces/typescriptinterface";
 
 export default function BookingPage() {
+  const { isLoaded: clerkLoaded, isSignedIn, user } = useUser();
+  const { redirectToSignIn } = useClerk();
+  const pathname = usePathname();
   const { id } = useParams();
   const [visit, setVisit] = useState<PlannedVisit | null>(null);
   const [loading, setLoading] = useState(true);
-  const [bookingLoading, setBookingLoading] = useState(false);
-
+  const [submitting, setSubmitting] = useState(false);
   const [formValues, setFormValues] = useState({
     name: "",
     phone: "",
@@ -21,169 +24,179 @@ export default function BookingPage() {
   });
 
   useEffect(() => {
-    if (!id) return;
-    const fetchVisit = async () => {
-      setLoading(true);
+    if (!clerkLoaded) return;
+
+    const loadData = async () => {
+      if (!isSignedIn) {
+        redirectToSignIn({
+          redirectUrl: pathname,
+        });
+        return;
+      }
+
       try {
         const res = await axios.get(`/api/planned/${id}`);
         setVisit(res.data);
-        setFormValues((vals) => ({
-          ...vals,
+        setFormValues((prev) => ({
+          ...prev,
+          email: user?.primaryEmailAddress?.emailAddress || "",
           guests: res.data.guests || 1,
         }));
       } catch (error) {
-        console.error("Failed to fetch visit", error);
-        setVisit(null);
+        toast.error("Failed to load visit details");
+        console.error(error);
       } finally {
         setLoading(false);
       }
     };
-    fetchVisit();
-  }, [id]);
 
-  if (loading) return <p>Loading visit details...</p>;
-  if (!visit) return <p>Visit not found.</p>;
+    loadData();
+  }, [clerkLoaded, isSignedIn, id, user, redirectToSignIn]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormValues((vals) => ({
-      ...vals,
-      [name]: name === "guests" ? Number(value) : value,
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: name === "guests" ? parseInt(value) || 1 : value,
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setBookingLoading(true);
+    if (!isSignedIn || !user || !visit) return;
 
-    const data = {
-      ...formValues,
-      visitId: visit._id,
-    };
-
+    setSubmitting(true);
     try {
-      const res = await axios.post("/api/bookings", data);
-      toast.success("Booking Successful");
-
+      await axios.post("/api/bookings", {
+        ...formValues,
+        plannedVisitId: visit._id,
+        clerkId: user.id,
+        status: "Unpaid",
+      });
+      toast.success("Booking confirmed!");
       setFormValues({
         name: "",
         phone: "",
-        email: "",
-        guests: 1,
+        email: user.primaryEmailAddress?.emailAddress || "",
+        guests: visit.guests || 1,
       });
-    } catch (error: unknown) {
-      const err = error as AxiosError;
-      toast.error("Booking Failed");
+    } catch (error) {
+      toast.error("Failed to submit booking");
+      console.error(error);
     } finally {
-      setBookingLoading(false);
+      setSubmitting(false);
     }
   };
+
+  if (!clerkLoaded || loading) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.loading}>Loading...</div>
+      </div>
+    );
+  }
+
+  if (!isSignedIn) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.authMessage}>Redirecting to login...</div>
+      </div>
+    );
+  }
+
+  if (!visit) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.error}>Visit not found</div>
+      </div>
+    );
+  }
 
   return (
     <section className={styles.section}>
       <div className={styles.container}>
         <h1 className={styles.heading}>Book Your Visit to {visit.title}</h1>
 
+        {isSignedIn && (
+          <p className={styles.userEmail}>
+            Booking as:{" "}
+            <strong>{user.primaryEmailAddress?.emailAddress}</strong>
+          </p>
+        )}
+
         <div className={styles.meta}>
           <div className={styles.detail}>
-            <span className={styles.label}>Date</span>
-            {visit.date}
+            <span>Date:</span> {visit.date}
           </div>
           <div className={styles.detail}>
-            <span className={styles.label}>Time</span>
-            {visit.time}
+            <span>Time:</span> {visit.time}
           </div>
           <div className={styles.detail}>
-            <span className={styles.label}>Location</span>
-            {visit.location}
+            <span>Location:</span> {visit.location}
           </div>
           <div className={styles.detail}>
-            <span className={styles.label}>Category</span>
-            {visit.category}
-          </div>
-          <div className={styles.detail}>
-            <span className={styles.label}>Guests</span>
-            {visit.guests}
-          </div>
-          <div className={styles.detail}>
-            <span className={styles.label}>Status</span>
-            {visit.status}
+            <span>Max Guests:</span> {visit.guests}
           </div>
         </div>
 
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <input type="hidden" name="visitId" value={visit._id} />
-
-          <div className={styles.inputGroup}>
-            <label className={styles.label} htmlFor="name">
-              Full Name
-            </label>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.formGroup}>
+            <label htmlFor="name">Full Name</label>
             <input
               id="name"
               name="name"
               type="text"
-              placeholder="Your Name"
-              className={styles.input}
-              required
               value={formValues.name}
-              onChange={handleChange}
+              onChange={handleInputChange}
+              required
             />
           </div>
 
-          <div className={styles.inputGroup}>
-            <label className={styles.label} htmlFor="phone">
-              Phone Number
-            </label>
+          <div className={styles.formGroup}>
+            <label htmlFor="phone">Phone Number</label>
             <input
               id="phone"
               name="phone"
               type="tel"
-              placeholder="e.g. +254712345678"
-              className={styles.input}
-              required
               value={formValues.phone}
-              onChange={handleChange}
+              onChange={handleInputChange}
+              required
             />
           </div>
 
-          <div className={styles.inputGroup}>
-            <label className={styles.label} htmlFor="email">
-              Email Address
-            </label>
+          <div className={styles.formGroup}>
+            <label htmlFor="email">Email</label>
             <input
               id="email"
               name="email"
               type="email"
-              placeholder="you@example.com"
-              className={styles.input}
-              required
               value={formValues.email}
-              onChange={handleChange}
+              onChange={handleInputChange}
+              required
+              disabled={!!user?.primaryEmailAddress}
             />
           </div>
 
-          <div className={styles.inputGroup}>
-            <label className={styles.label} htmlFor="guests">
-              Number of Guests
-            </label>
+          <div className={styles.formGroup}>
+            <label htmlFor="guests">Number of Guests</label>
             <input
               id="guests"
               name="guests"
               type="number"
-              className={styles.input}
-              required
-              min={1}
+              min="1"
+              max={visit.guests}
               value={formValues.guests}
-              onChange={handleChange}
+              onChange={handleInputChange}
+              required
             />
           </div>
 
           <button
             type="submit"
-            className={styles.button}
-            disabled={bookingLoading}
+            className={styles.submitButton}
+            disabled={submitting || !isSignedIn}
           >
-            {bookingLoading ? "Booking..." : "Confirm Booking"}
+            {submitting ? "Processing..." : "Confirm Booking"}
           </button>
         </form>
       </div>

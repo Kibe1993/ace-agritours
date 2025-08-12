@@ -1,3 +1,4 @@
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import "./globals.css";
 import LayoutWrapper from "@/components/LayoutWrapper";
@@ -16,8 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ToastContainer position="top-right" theme="dark" />
-        <LayoutWrapper>{children}</LayoutWrapper>
+        <ClerkProvider>
+          <ToastContainer position="top-right" theme="dark" />
+          <LayoutWrapper>{children}</LayoutWrapper>
+        </ClerkProvider>
       </body>
     </html>
   );

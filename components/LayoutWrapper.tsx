@@ -9,8 +9,11 @@ export default function LayoutWrapper({
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
-  const isAdminPage = pathname.includes("/admin");
+  const pathname = usePathname() || "";
+
+  const isAdminPage = ["/admin", "/bookings"].some((path) =>
+    pathname.toLowerCase().startsWith(path)
+  );
 
   return (
     <>

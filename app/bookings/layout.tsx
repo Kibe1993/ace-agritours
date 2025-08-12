@@ -9,15 +9,17 @@ export const metadata: Metadata = {
   description: "Admin dashboard for managing blogs and farm visits.",
 };
 
-export default function AdminLayout({
+export default function BookingLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <AdminNavbar />
-      <AdminShell>{children}</AdminShell>
-    </>
+    <html lang="en">
+      <body>
+        <AdminNavbar />
+        {children}
+      </body>
+    </html>
   );
 }

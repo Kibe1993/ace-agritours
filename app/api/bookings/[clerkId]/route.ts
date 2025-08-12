@@ -3,15 +3,14 @@ import { connectDB } from "@/lib/DB/connectDB";
 import { Booking } from "@/lib/Models/bookings";
 import { PlannedVisit } from "@/lib/Models/planned";
 
-export async function GET(
-  req: NextRequest,
-  context: { params: { clerkId: string } }
-) {
-  const { clerkId } = context.params;
+export async function GET(req: NextRequest, context: unknown) {
+  const { params } = context as { params: { clerkId: string } };
 
   await connectDB();
 
-  console.log("clerkId from route:", clerkId);
+  const { clerkId } = params;
+
+  console.log(clerkId);
 
   if (!clerkId) {
     return NextResponse.json({ error: "Missing clerkId" }, { status: 400 });
@@ -19,7 +18,6 @@ export async function GET(
 
   try {
     const bookings = await Booking.find({ clerkId }).populate("plannedVisitId");
-
     console.log(bookings);
 
     return NextResponse.json({ bookings });

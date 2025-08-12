@@ -106,6 +106,7 @@ export interface Booking {
   name: string;
   phone: number;
   email: string;
+  guests: number;
   status: "Unpaid" | "Paid";
   plannedVisitId: PlannedVisit;
   createdAt: string;

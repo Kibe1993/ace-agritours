@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useUser, SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import { useUser, SignInButton } from "@clerk/nextjs";
 import { Booking } from "@/lib/TSInterfaces/typescriptinterface";
-
 import styles from "./MyBookingPage.module.css";
 
 export default function MyBookingsPage() {
@@ -14,7 +13,6 @@ export default function MyBookingsPage() {
 
   useEffect(() => {
     if (!user) return;
-
     const fetchBookings = async () => {
       try {
         const res = await axios.get(`/api/bookings/${user.id}`);
@@ -25,9 +23,6 @@ export default function MyBookingsPage() {
         setLoading(false);
       }
     };
-
-    console.log(bookings);
-
     fetchBookings();
   }, [user]);
 
@@ -48,43 +43,63 @@ export default function MyBookingsPage() {
     );
   }
 
-  if (bookings.length === 0) {
-    return (
-      <div className={styles.container}>
-        <p className={styles.message}>No bookings found.</p>
-      </div>
-    );
-  }
-
   return (
     <div className={styles.container}>
       <h1 className={styles.heading}>My Bookings</h1>
-      <ul className={styles.bookingList}>
-        {bookings.map((b) => (
-          <li key={b._id} className={styles.bookingItem}>
-            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-              <img
-                src={b.plannedVisitId.image.url}
-                alt={b.plannedVisitId.title}
-                style={{
-                  width: "80px",
-                  height: "80px",
-                  objectFit: "cover",
-                  borderRadius: "6px",
-                }}
-              />
-              <div>
-                <h3>{b.plannedVisitId.title}</h3>
-                <p>{b.plannedVisitId.location}</p>
-                <p>{new Date(b.plannedVisitId.date).toLocaleDateString()}</p>
-                <p>Guests: {b.plannedVisitId.guests}</p>
-                <p>Time: {b.plannedVisitId.time}</p>
+
+      {/* Current Bookings */}
+      <section>
+        <h2 className={styles.sectionTitle}>Current Bookings</h2>
+        {bookings.length > 0 ? (
+          <div className={styles.cardGrid}>
+            {bookings.map((b) => (
+              <div key={b._id} className={styles.bookingCard}>
+                <div className={styles.cardContent}>
+                  <img
+                    src={b.plannedVisitId.image.url}
+                    alt={b.plannedVisitId.title}
+                    className={styles.cardImage}
+                  />
+                  <div className={styles.cardInfo}>
+                    <h3>{b.plannedVisitId.title}</h3>
+                    <p>{b.plannedVisitId.location}</p>
+                    <p>
+                      Date:{" "}
+                      {new Date(b.plannedVisitId.date).toLocaleDateString()}
+                    </p>
+                    <p>Time: {b.plannedVisitId.time}</p>
+                    <p>Guests: {b.guests || "N/A"}</p>
+                    <span
+                      className={`${styles.status} ${
+                        styles[b.status.toLowerCase()]
+                      }`}
+                    >
+                      {b.status}
+                    </span>
+                  </div>
+                </div>
+                {b.status === "Unpaid" && (
+                  <button className={styles.payButton}>Pay Now</button>
+                )}
               </div>
-            </div>
-            <span className={styles.bookingStatus}>{b.status}</span>
-          </li>
-        ))}
-      </ul>
+            ))}
+          </div>
+        ) : (
+          <p className={styles.emptyText}>You have no current bookings.</p>
+        )}
+      </section>
+
+      {/* Upcoming Bookings Placeholder */}
+      <section>
+        <h2 className={styles.sectionTitle}>Upcoming Bookings</h2>
+        <p className={styles.emptyText}>No upcoming bookings yet.</p>
+      </section>
+
+      {/* Past Bookings Placeholder */}
+      <section>
+        <h2 className={styles.sectionTitle}>Past Bookings</h2>
+        <p className={styles.emptyText}>No past bookings yet.</p>
+      </section>
     </div>
   );
 }

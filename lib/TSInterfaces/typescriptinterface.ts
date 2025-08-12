@@ -99,3 +99,14 @@ export interface PlannedVisit {
   };
   featured: boolean;
 }
+
+export interface Booking {
+  _id: string;
+  name: string;
+  phone: number;
+  email: string;
+  status: "Unpaid" | "Paid";
+  plannedVisitId: string | PlannedVisit;
+  createdAt?: string;
+  updatedAt?: string;
+}

@@ -17,6 +17,7 @@ const manage = [
   { href: "/admin/manage/manageblog", label: " Blogs" },
   { href: "/admin/manage/managefarmvisit", label: " Farm Visits" },
   { href: "/admin/manage/manageplannedvisits", label: " Planned Visits" },
+  { href: "/admin/manage/managebookings", label: " Bookings" },
 ];
 
 export default function AdminSidebar() {

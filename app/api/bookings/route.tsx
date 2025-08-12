@@ -60,3 +60,20 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+export async function GET() {
+  try {
+    await connectDB();
+
+    const bookings = await Booking.find()
+      .sort({ createdAt: -1 })
+      .populate("plannedVisitId", "title");
+
+    return NextResponse.json({ bookings }, { status: 200 });
+  } catch (error) {
+    console.error("Failed to fetch bookings", error);
+    return NextResponse.json(
+      { message: "Error fetching bookings" },
+      { status: 500 }
+    );
+  }
+}

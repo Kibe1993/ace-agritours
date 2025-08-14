@@ -119,4 +119,8 @@ export interface UpdateFields {
   category: string;
   date: string;
   author: string;
+  image: {
+    url: string;
+    public_id: string;
+  };
 }

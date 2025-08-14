@@ -10,9 +10,10 @@ import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
+import type { EditorState } from "lexical";
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
-import { $generateHtmlFromNodes } from "@lexical/html";
+import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 
@@ -25,10 +26,11 @@ import {
   forwardRef,
   type ForwardedRef,
   useState,
+  useEffect,
 } from "react";
 import styles from "./editor.module.css";
 
-// ✅ Define the type of methods the parent can call
+// ✅ Type for parent methods
 export interface LexicalEditorHandle {
   clearEditor: () => void;
 }
@@ -37,15 +39,30 @@ const theme = {
   paragraph: styles.paragraph,
 };
 
-// ✅ Subcomponent inside LexicalComposer
 function InnerEditor({
   onChange,
+  initialContent,
   forwardedRef,
 }: {
   onChange: (html: string) => void;
+  initialContent?: string;
   forwardedRef: ForwardedRef<LexicalEditorHandle>;
 }) {
   const [editor] = useLexicalComposerContext();
+
+  // Load initial HTML content on mount
+  useEffect(() => {
+    if (initialContent) {
+      editor.update(() => {
+        const parser = new DOMParser();
+        const dom = parser.parseFromString(initialContent, "text/html");
+        const nodes = $generateNodesFromDOM(editor, dom);
+        $getRoot()
+          .clear()
+          .append(...nodes);
+      });
+    }
+  }, [initialContent, editor]);
 
   useImperativeHandle(forwardedRef, () => ({
     clearEditor() {
@@ -71,7 +88,7 @@ function InnerEditor({
       <ListPlugin />
       <LinkEditor />
       <OnChangePlugin
-        onChange={(editorState) => {
+        onChange={(editorState: EditorState) => {
           editorState.read(() => {
             const html = $generateHtmlFromNodes(editor, null);
             onChange(html);
@@ -82,7 +99,6 @@ function InnerEditor({
   );
 }
 
-// ✅ Link toolbar inside editor
 function LinkEditor() {
   const [editor] = useLexicalComposerContext();
   const [url, setUrl] = useState("");
@@ -106,16 +122,18 @@ function LinkEditor() {
         placeholder="Paste link"
         className={styles.linkInput}
       />
-      <button onClick={insertLink} className={styles.linkButton}>
+      <button type="button" onClick={insertLink} className={styles.linkButton}>
         Add Link
       </button>
     </div>
   );
 }
 
-// ✅ Parent Component with LexicalComposer at the top
 const LexicalEditor = forwardRef(function LexicalEditor(
-  { onChange }: { onChange: (value: string) => void },
+  {
+    onChange,
+    initialContent,
+  }: { onChange: (value: string) => void; initialContent?: string },
   ref: ForwardedRef<LexicalEditorHandle>
 ) {
   const initialConfig: InitialConfigType = {
@@ -130,7 +148,11 @@ const LexicalEditor = forwardRef(function LexicalEditor(
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <InnerEditor onChange={onChange} forwardedRef={ref} />
+      <InnerEditor
+        onChange={onChange}
+        initialContent={initialContent}
+        forwardedRef={ref}
+      />
     </LexicalComposer>
   );
 });

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import styles from "./AdminTable.module.css";
+import { useParams, useRouter } from "next/navigation";
 
 interface BaseItem {
   _id: string;
@@ -25,9 +26,10 @@ export default function AdminTable<T extends BaseItem>({
   basePath,
   onToggleStatus,
   onToggleFeatured,
-  onEdit,
   onDelete,
 }: Props<T>) {
+  const router = useRouter();
+  const { key } = useParams();
   return (
     <table className={styles.table}>
       <thead>
@@ -73,12 +75,6 @@ export default function AdminTable<T extends BaseItem>({
               </td>
             )}
             <td>
-              <button
-                onClick={() => onEdit?.(item._id)}
-                className={styles.edit}
-              >
-                Edit
-              </button>
               <button
                 onClick={() => onDelete?.(item._id)}
                 className={styles.delete}

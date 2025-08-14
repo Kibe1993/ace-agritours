@@ -10,15 +10,12 @@ export async function GET(req: NextRequest, context: unknown) {
 
   const { clerkId } = params;
 
-  console.log(clerkId);
-
   if (!clerkId) {
     return NextResponse.json({ error: "Missing clerkId" }, { status: 400 });
   }
 
   try {
     const bookings = await Booking.find({ clerkId }).populate("plannedVisitId");
-    console.log(bookings);
 
     return NextResponse.json({ bookings });
   } catch (error) {

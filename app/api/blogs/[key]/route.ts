@@ -73,7 +73,7 @@ export async function PATCH(req: NextRequest, context: unknown) {
       imageData = { url, public_id };
     }
 
-    const updateFields: UpdateFields = {
+    const updateFields: Partial<UpdateFields> = {
       title,
       slug,
       description,

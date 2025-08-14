@@ -112,3 +112,11 @@ export interface Booking {
   createdAt: string;
   updatedAt: string;
 }
+export interface UpdateFields {
+  title: string;
+  slug: string;
+  description: string;
+  category: string;
+  date: string;
+  author: string;
+}

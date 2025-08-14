@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { Blog } from "@/lib/Models/blog";
 import { uploadImageToCloudinary } from "@/lib/cloudinary/uploadImage";
 import slugify from "slugify";
+import { UpdateFields } from "@/lib/TSInterfaces/typescriptinterface";
 
 export async function GET(req: NextRequest, context: unknown) {
   const { params } = context as { params: { key: string } };
@@ -72,7 +73,7 @@ export async function PATCH(req: NextRequest, context: unknown) {
       imageData = { url, public_id };
     }
 
-    const updateFields: any = {
+    const updateFields: UpdateFields = {
       title,
       slug,
       description,

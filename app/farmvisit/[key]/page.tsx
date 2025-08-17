@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import styles from "./page.module.css";
 import placeholder from "@/public/avatar.png";
 import { FarmVisits } from "@/lib/TSInterfaces/typescriptinterface";
 import axios from "axios";
+import { useUser } from "@clerk/nextjs";
 
 export default function VisitDetails() {
   const { key } = useParams();
@@ -15,6 +16,11 @@ export default function VisitDetails() {
   const [current, setCurrent] = useState(0);
   const [modalIdx, setModalIdx] = useState<number | null>(null);
   const [visibleCount, setVisibleCount] = useState(3);
+  const router = useRouter();
+
+  const { user, isLoaded, isSignedIn } = useUser();
+
+  const isAdmin = isSignedIn && user?.publicMetadata?.role === "admin";
 
   useEffect(() => {
     const fetchVisit = async () => {
@@ -78,6 +84,16 @@ export default function VisitDetails() {
 
   const handleNext = () => setCurrent((prev) => Math.min(prev + 1, maxSteps));
   const handlePrev = () => setCurrent((prev) => Math.max(prev - 1, 0));
+
+  const handleDelete = async (id: string) => {
+    try {
+      await axios.delete(`/api/farmvisits/${id}`);
+      setVisit(null);
+      router.push("/farmvisit");
+    } catch (error) {
+      console.error("Failed to delete farm visit", error);
+    }
+  };
 
   return (
     <section className={styles.section}>
@@ -233,6 +249,27 @@ export default function VisitDetails() {
             </div>
           </div>
         </div>
+
+        {isAdmin && (
+          <div className={styles.actions}>
+            <button
+              className={styles.edit}
+              onClick={() =>
+                router.push(
+                  `/admin/manage/managefarmvisit/edit-firmvisit/${key}`
+                )
+              }
+            >
+              Edit
+            </button>
+            <button
+              className={styles.delete}
+              onClick={() => handleDelete(visit._id)}
+            >
+              Delete
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

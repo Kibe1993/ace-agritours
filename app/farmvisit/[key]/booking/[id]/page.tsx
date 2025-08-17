@@ -1,7 +1,7 @@
 "use client";
 
 import { useUser, useClerk } from "@clerk/nextjs";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./page.module.css";
@@ -13,6 +13,7 @@ export default function BookingPage() {
   const { openSignIn } = useClerk();
   const pathname = usePathname();
   const { id } = useParams();
+  const router = useRouter();
 
   const [visit, setVisit] = useState<PlannedVisit | null>(null);
   const [loading, setLoading] = useState(true);
@@ -27,6 +28,16 @@ export default function BookingPage() {
     email: "",
     guests: 1,
   });
+
+  // Check if the user is the admin. If it is the admin the router redirects the user to the manage bookings page. If the user is user a booking form appears.
+
+  const isAdmin = isSignedIn && user?.publicMetadata?.role === "admin";
+
+  useEffect(() => {
+    if (isAdmin) {
+      router.replace("/admin/manage/managebookings");
+    }
+  }, [isAdmin, router]);
 
   useEffect(() => {
     if (!clerkLoaded) return;

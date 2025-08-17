@@ -43,6 +43,20 @@ export default function MyBookingsPage() {
     );
   }
 
+  const handlePayNow = async (bookingId: string) => {
+    try {
+      const res = await axios.post("/api/payments/mpesa", {
+        bookingId,
+      });
+      alert(
+        "Payment prompt sent to your phone. Please complete the transaction."
+      );
+    } catch (error) {
+      console.error("Failed to initiate payment", error);
+      alert("Payment failed. Please try again.");
+    }
+  };
+
   return (
     <div className={styles.container}>
       <h1 className={styles.heading}>My Bookings</h1>
@@ -79,7 +93,12 @@ export default function MyBookingsPage() {
                   </div>
                 </div>
                 {b.status === "Unpaid" && (
-                  <button className={styles.payButton}>Pay Now</button>
+                  <button
+                    className={styles.payButton}
+                    onClick={() => handlePayNow(b._id)}
+                  >
+                    Pay Now
+                  </button>
                 )}
               </div>
             ))}

@@ -44,6 +44,8 @@ export default function OurVisitsGrid() {
       ? ourVisits
       : ourVisits.filter((v) => v.category === selectedCategory);
 
+  const visibleVisits = filteredVisits.filter((b) => b.status === "Completed");
+
   return (
     <section className={styles.section} id="ourvisits">
       <div className={styles.container}>
@@ -70,7 +72,7 @@ export default function OurVisitsGrid() {
         </div>
 
         <div className={styles.grid}>
-          {filteredVisits.map((visit) => (
+          {visibleVisits.map((visit) => (
             <OurVisitCard key={visit.slug} item={visit} />
           ))}
         </div>

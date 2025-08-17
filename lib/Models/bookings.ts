@@ -9,7 +9,7 @@ const bookingsSchema = new mongoose.Schema(
     guests: { type: Number, required: true },
     status: {
       type: String,
-      enum: ["Unpaid", "Paid"],
+      enum: ["Unpaid", "Paid", "Failed"], // added Failed for mpesa failures
       default: "Unpaid",
     },
     plannedVisitId: {
@@ -17,6 +17,11 @@ const bookingsSchema = new mongoose.Schema(
       ref: "PlannedVisit",
       required: true,
     },
+
+    // 🟢 M-Pesa related fields
+    checkoutId: { type: String }, // Safaricom CheckoutRequestID
+    mpesaReceipt: { type: String }, // MpesaReceiptNumber
+    transactionDate: { type: String }, // YYYYMMDDHHMMSS
   },
   { timestamps: true }
 );

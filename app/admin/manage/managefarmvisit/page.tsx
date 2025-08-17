@@ -72,10 +72,14 @@ export default function ManagePastFarmVisitsPage() {
     console.log("Edit visit", id);
   };
 
-  const handleDelete = (id: string) => {
-    setData((prev) => prev.filter((item) => item._id !== id));
+  const handleDelete = async (id: string) => {
+    try {
+      await axios.delete(`/api/farmvisits/${id}`);
+      setData((prev) => prev.filter((item) => item._id !== id));
+    } catch (error) {
+      console.error("Failed to delete farmvisit", error);
+    }
   };
-
   return (
     <div className={styles.container}>
       <h1 className={styles.heading}>Manage Past Farm Visits</h1>

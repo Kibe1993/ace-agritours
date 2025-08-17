@@ -501,3 +501,40 @@
   font-size: 0.875rem;
   border: 1px solid #bae6fd;
 }
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.edit,
+.delete {
+  padding: 10px 20px;
+  min-width: 150px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.edit {
+  background-color: #e0f7e9;
+  color: #1c6b2c;
+  border: 1px solid #a4d6b2;
+}
+
+.edit:hover {
+  background-color: #c6f0d8;
+}
+
+.delete {
+  background-color: #ffecec;
+  color: #c0392b;
+  border: 1px solid #f5bfbf;
+}
+
+.delete:hover {
+  background-color: #ffdbdb;
+}

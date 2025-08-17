@@ -124,3 +124,25 @@ export interface UpdateFields {
     public_id: string;
   };
 }
+
+export interface UpdateFarmVisitFields {
+  title: string;
+  slug: string;
+  location: string;
+  area: string;
+  date: string;
+  time: string;
+  category: string;
+  guests: number;
+  trainer: string;
+  highlights?: string[];
+  description: string;
+  treatmentSummary?: string;
+  availableDays?: string[];
+  email: string;
+  phone: string;
+  images?: {
+    url: string;
+    public_id: string;
+  }[];
+}

@@ -117,7 +117,7 @@ export async function PATCH(req: NextRequest, context: unknown) {
 
     // if new images were uploaded, append to existing array
     if (uploadedImages.length > 0) {
-      (updateFields as any).$push = { images: { $each: uploadedImages } };
+      updateFields.$push = { images: { $each: uploadedImages } };
     }
 
     const updatedFarmVisit = mongoose.Types.ObjectId.isValid(key)

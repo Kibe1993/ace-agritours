@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true, data: stkRes.data });
   } catch (error: unknown) {
     let message = "Unknown error";
-    let details: any = null;
+    let details: unknown = null; // ✅ use unknown instead of any
 
     if (error instanceof AxiosError) {
       message = error.message;

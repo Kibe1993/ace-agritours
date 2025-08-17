@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import slugify from "slugify";
 import { uploadImageToCloudinary } from "@/lib/cloudinary/uploadImage";
 import { UpdateFarmVisitFields } from "@/lib/TSInterfaces/typescriptinterface";
+import { UpdateQuery } from "mongoose";
 
 export async function GET(req: NextRequest, context: unknown) {
   const { params } = context as { params: { key: string } };
@@ -92,7 +93,7 @@ export async function PATCH(req: NextRequest, context: unknown) {
       }
     }
 
-    const updateFields: Partial<UpdateFarmVisitFields> = {
+    const updateFields: UpdateQuery<UpdateFarmVisitFields> = {
       title,
       slug,
       location,

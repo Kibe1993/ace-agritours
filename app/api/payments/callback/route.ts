@@ -1,35 +1,39 @@
 import { connectDB } from "@/lib/DB/connectDB";
 import { Booking } from "@/lib/Models/bookings";
+import {
+  MpesaCallbackBody,
+  MpesaCallbackItem,
+} from "@/lib/TSInterfaces/typescriptinterface";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    await connectDB(); // ✅ Ensure DB is connected
+    await connectDB(); // Ensure DB is connected
 
-    const body = await req.json();
+    const body: MpesaCallbackBody = await req.json();
 
     console.log("📩 M-Pesa Callback:", JSON.stringify(body, null, 2));
 
-    const stkCallback = body?.Body?.stkCallback;
-    const resultCode = stkCallback?.ResultCode;
-    const resultDesc = stkCallback?.ResultDesc;
-    const checkoutId = stkCallback?.CheckoutRequestID;
-    const metadata = stkCallback?.CallbackMetadata?.Item;
+    const stkCallback = body.Body.stkCallback;
+    const { ResultCode, CheckoutRequestID, CallbackMetadata } = stkCallback;
+
+    const metadata: MpesaCallbackItem[] = CallbackMetadata?.Item || [];
 
     // Extract values from metadata safely
-    const mpesaReceipt = metadata?.find(
-      (i: any) => i.Name === "MpesaReceiptNumber"
-    )?.Value;
-    const transactionDate = metadata?.find(
-      (i: any) => i.Name === "TransactionDate"
-    )?.Value;
+    const mpesaReceipt = metadata.find(
+      (i: MpesaCallbackItem) => i.Name === "MpesaReceiptNumber"
+    )?.Value as string | undefined;
 
-    // ✅ Save to DB
+    const transactionDate = metadata.find(
+      (i: MpesaCallbackItem) => i.Name === "TransactionDate"
+    )?.Value as number | undefined;
+
+    // Update booking in DB
     await Booking.updateOne(
-      { checkoutId },
+      { checkoutId: CheckoutRequestID },
       {
         $set: {
-          status: resultCode === 0 ? "Paid" : "Failed",
+          status: ResultCode === 0 ? "Paid" : "Failed",
           mpesaReceipt,
           transactionDate,
         },
@@ -37,8 +41,10 @@ export async function POST(req: NextRequest) {
     );
 
     return NextResponse.json({ message: "Callback received" });
-  } catch (err: any) {
-    console.error("❌ Callback error:", err.message);
+  } catch (err) {
+    // Type-safe error handling
+    const errorMessage = err instanceof Error ? err.message : "Unknown error";
+    console.error("❌ Callback error:", errorMessage);
     return NextResponse.json(
       { error: "Failed to process callback" },
       { status: 500 }

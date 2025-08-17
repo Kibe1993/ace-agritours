@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { connectDB } from "@/lib/DB/connectDB";
 import { Booking } from "@/lib/Models/bookings";
 
@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
 
     const consumerKey = process.env.MPESA_CONSUMER_KEY!;
     const consumerSecret = process.env.MPESA_CONSUMER_SECRET!;
-    const shortCode = process.env.MPESA_SHORTCODE!; // e.g. 174379 in sandbox
+    const shortCode = process.env.MPESA_SHORTCODE!;
     const passKey = process.env.MPESA_PASSKEY!;
     const phoneNumber = process.env.TEST_PHONE_NUMBER!;
 
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
         PartyA: phoneNumber,
         PartyB: shortCode,
         PhoneNumber: phoneNumber,
-        CallBackURL: "https://yourdomain.com/api/payments/callback", // ⚠️ replace with your real domain
+        CallBackURL: "https://yourdomain.com/api/payments/callback",
         AccountReference: bookingId,
         TransactionDesc: "Booking Payment",
       },
@@ -65,12 +65,23 @@ export async function POST(req: NextRequest) {
     await Booking.updateOne({ _id: bookingId }, { $set: { checkoutId } });
 
     return NextResponse.json({ success: true, data: stkRes.data });
-  } catch (error: any) {
-    console.error("M-Pesa error:", error.response?.data || error.message);
+  } catch (error: unknown) {
+    let message = "Unknown error";
+    let details: any = null;
+
+    if (error instanceof AxiosError) {
+      message = error.message;
+      details = error.response?.data;
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
+
+    console.error("M-Pesa error:", details || message);
+
     return NextResponse.json(
       {
         error: "Payment initiation failed",
-        details: error.response?.data || error.message,
+        details: details || message,
       },
       { status: 500 }
     );

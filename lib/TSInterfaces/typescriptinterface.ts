@@ -146,3 +146,20 @@ export interface UpdateFarmVisitFields {
     public_id: string;
   }[];
 }
+export interface MpesaCallbackItem {
+  Name: string;
+  Value: string | number;
+}
+
+export interface MpesaCallbackBody {
+  Body: {
+    stkCallback: {
+      ResultCode: number;
+      ResultDesc: string;
+      CheckoutRequestID: string;
+      CallbackMetadata?: {
+        Item: MpesaCallbackItem[];
+      };
+    };
+  };
+}

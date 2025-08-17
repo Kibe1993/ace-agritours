@@ -7,12 +7,16 @@ import styles from "./page.module.css";
 import { toast } from "react-toastify";
 import type { LexicalEditorHandle } from "@/components/editor/LexicalEditor";
 import { useParams, useRouter } from "next/navigation";
+import {
+  FarmVisits,
+  UpdateFarmVisitFields,
+} from "@/lib/TSInterfaces/typescriptinterface";
 
 export default function EditFarmVisitPage() {
   const { key } = useParams();
   const router = useRouter();
 
-  const [farmVisit, setFarmVisit] = useState<any>(null);
+  const [farmVisit, setFarmVisit] = useState<UpdateFarmVisitFields>();
   const [loading, setLoading] = useState(true);
   const [description, setDescription] = useState("");
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
@@ -241,11 +245,14 @@ export default function EditFarmVisitPage() {
 
           {/* Existing Images */}
           <div className={styles.imagePreviewGrid}>
-            {farmVisit.images?.map((url: string, idx: number) => (
-              <div key={idx} className={styles.previewItem}>
-                <img src={url} alt={`Existing ${idx}`} />
-              </div>
-            ))}
+            {farmVisit.images?.map(
+              (img: { url: string; public_id: string }, idx: number) => (
+                <div key={img.public_id || idx} className={styles.previewItem}>
+                  <img src={img.url} alt={`Existing ${idx}`} />
+                </div>
+              )
+            )}
+
             {selectedImages.map((img, idx) => (
               <div key={`new-${idx}`} className={styles.previewItem}>
                 <img src={URL.createObjectURL(img)} alt={`Preview ${idx}`} />

@@ -92,12 +92,19 @@ export default function MyBookingsPage() {
                     </span>
                   </div>
                 </div>
-                {b.status === "Unpaid" && (
+                {b.status === "Unpaid" ? (
                   <button
                     className={styles.payButton}
                     onClick={() => handlePayNow(b._id)}
                   >
                     Pay Now
+                  </button>
+                ) : (
+                  <button
+                    className={styles.payButton}
+                    onClick={() => handlePayNow(b._id)}
+                  >
+                    Try Again
                   </button>
                 )}
               </div>

@@ -1,3 +1,5 @@
+import { Document, Types } from "mongoose";
+
 export interface TestimonialType {
   _id: string;
   name: string;
@@ -154,12 +156,50 @@ export interface MpesaCallbackItem {
 export interface MpesaCallbackBody {
   Body: {
     stkCallback: {
+      MerchantRequestID: string;
+      CheckoutRequestID: string;
       ResultCode: number;
       ResultDesc: string;
-      CheckoutRequestID: string;
       CallbackMetadata?: {
         Item: MpesaCallbackItem[];
       };
     };
   };
+}
+
+export interface IVisitCommentDoc extends Document {
+  farmVisitId: Types.ObjectId;
+  email: string;
+  userName: string;
+  message: string;
+  rating?: number;
+  likes?: number;
+  likedBy: string[];
+
+  replies: {
+    userName: string;
+    message: string;
+    createdAt: Date;
+  }[];
+
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface VisitComment {
+  _id: Types.ObjectId;
+  farmVisitId: Types.ObjectId;
+  userName: string;
+  message: string;
+  rating?: number;
+  likes?: number;
+  likedBy: string[];
+  replies: {
+    userName: string;
+    message: string;
+    createdAt: Date;
+  }[];
+
+  createdAt: Date;
+  updatedAt: Date;
 }

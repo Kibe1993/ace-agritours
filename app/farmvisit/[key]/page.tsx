@@ -8,6 +8,7 @@ import placeholder from "@/public/avatar.png";
 import { FarmVisits } from "@/lib/TSInterfaces/typescriptinterface";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
+import CommentsSection from "@/components/FarmVisitPage/comments/CommentsSection";
 
 export default function VisitDetails() {
   const { key } = useParams();
@@ -270,6 +271,8 @@ export default function VisitDetails() {
             </button>
           </div>
         )}
+
+        {!isAdmin && <CommentsSection farmVisitId={visit._id} />}
       </div>
     </section>
   );

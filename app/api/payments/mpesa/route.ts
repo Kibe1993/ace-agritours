@@ -51,7 +51,8 @@ export async function POST(req: NextRequest) {
         PartyA: phoneNumber,
         PartyB: shortCode,
         PhoneNumber: phoneNumber,
-        CallBackURL: "https://yourdomain.com/api/payments/callback",
+        CallBackURL:
+          "https://85739e6b5f55.ngrok-free.app/api/payments/callback",
         AccountReference: bookingId,
         TransactionDesc: "Booking Payment",
       },

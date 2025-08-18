@@ -11,8 +11,7 @@ export async function POST(req: NextRequest) {
     await connectDB(); // Ensure DB is connected
 
     const body: MpesaCallbackBody = await req.json();
-
-    console.log("📩 M-Pesa Callback:", JSON.stringify(body, null, 2));
+    console.log("📥 Raw Callback Body:", JSON.stringify(body, null, 2));
 
     const stkCallback = body.Body.stkCallback;
     const { ResultCode, CheckoutRequestID, CallbackMetadata } = stkCallback;

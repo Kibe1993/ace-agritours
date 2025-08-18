@@ -83,6 +83,10 @@
   background-color: #e6ffed;
   color: #4caf50;
 }
+.failed {
+  background-color: #e6ffed;
+  color: #dd9857;
+}
 
 .payButton {
   background: #4caf50;

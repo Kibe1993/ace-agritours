@@ -59,12 +59,16 @@ export default function CommentsSection({
       setMessage("");
       toast.success("Comment posted!");
       fetchComments();
-    } catch (err: any) {
-      toast.error(err?.response?.data?.error || "Failed to post comment");
-    } finally {
-      setLoading(false);
-    }
-  };
+    } catch (err: unknown) {
+  if (axios.isAxiosError(err)) {
+    toast.error(err.response?.data?.error || "Failed to post comment");
+  } else {
+    toast.error("Failed to post comment");
+  }
+} finally {
+  setLoading(false);
+}
+
 
   // ✏️ Edit comment
   const handleEdit = async (id: string, updatedMessage: string) => {
